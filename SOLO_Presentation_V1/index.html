@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>SOLO - Back To The Future Sneakers</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -231,12 +234,70 @@
       }
     }
 
+    function isIOS() {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    }
+    function isStandalone() {
+      return window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+    }
+    function isFullscreen() {
+      return !!(document.fullscreenElement || document.webkitFullscreenElement || document.webkitCurrentFullScreenElement);
+    }
+    function requestFullscreenEl(el) {
+      if (el.requestFullscreen) return el.requestFullscreen();
+      if (el.webkitRequestFullscreen) return el.webkitRequestFullscreen();
+      if (el.webkitEnterFullscreen) return el.webkitEnterFullscreen(); // iOS video only
+      return Promise.reject(new Error('fullscreen not supported'));
+    }
+    function exitFullscreen() {
+      if (document.exitFullscreen) return document.exitFullscreen();
+      if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+      if (document.webkitCancelFullScreen) return document.webkitCancelFullScreen();
+      return Promise.reject(new Error('exit fullscreen not supported'));
+    }
     function toggleFullscreen() {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen();
+      if (isFullscreen()) {
+        exitFullscreen().catch(() => {});
+        return;
       }
+      // Try standard/webkit fullscreen on documentElement (works on iPad, desktop, Android)
+      requestFullscreenEl(document.documentElement).then(() => {
+        // Rescale after entering fullscreen
+        setTimeout(scaleToFit, 100);
+      }).catch(() => {
+        // Fallback for iPhone Safari where fullscreen API is unavailable:
+        // 1) Scroll slightly to hide Safari's bottom toolbar
+        // 2) Show a brief toast suggesting "Add to Home Screen"
+        try {
+          // Temporarily allow scroll
+          document.body.style.overflow = '';
+          document.documentElement.style.overflow = '';
+          window.scrollTo(0, 1);
+          setTimeout(() => {
+            document.body.style.overflow = 'hidden';
+            document.documentElement.style.overflow = 'hidden';
+            scaleToFit();
+          }, 300);
+        } catch(e) {}
+        showToast(isIOS() && !isStandalone()
+          ? '提示：在Safari中点击底部分享按钮 → "添加到主屏幕"，可获得无浏览器栏的真正全屏体验'
+          : '已尝试全屏显示');
+      });
+    }
+
+    // Toast for fullscreen hints
+    function showToast(msg) {
+      let t = document.getElementById('fsToast');
+      if (!t) {
+        t = document.createElement('div');
+        t.id = 'fsToast';
+        t.style.cssText = 'position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.85);color:#39FF14;padding:12px 20px;border-radius:12px;font-size:13px;z-index:9999;max-width:85%;text-align:center;line-height:1.5;border:1px solid rgba(57,255,20,0.4);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;transition:opacity 0.3s;pointer-events:none;font-family:Helvetica Neue,Arial,sans-serif;';
+        document.body.appendChild(t);
+      }
+      t.textContent = msg;
+      t.style.opacity = '1';
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.style.opacity = '0'; }, 3500);
     }
 
     // Fullscreen button
