@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>SOLO - Back To The Future Sneakers V2</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -13,6 +13,8 @@
       background: #000;
       color: #fff;
       font-family: Inter, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     .stage {
       position: fixed;
@@ -26,6 +28,8 @@
       justify-content: center;
       overflow: hidden;
       background: #000;
+      cursor: pointer;
+      z-index: 1;
     }
     .presentation-container {
       position: absolute;
@@ -34,6 +38,7 @@
       transform-origin: center center;
       background: #000;
       will-change: transform;
+      pointer-events: none;
     }
     .slide-frame {
       position: absolute;
@@ -58,56 +63,11 @@
       transition: width 0.35s ease;
       box-shadow: 0 0 14px rgba(57, 255, 20, 0.55);
     }
-    .nav-controls {
-      position: fixed;
-      left: 50%;
-      bottom: 30px;
-      transform: translateX(-50%);
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      gap: 18px;
-      padding: 12px 22px;
-      border: 1px solid rgba(57, 255, 20, 0.34);
-      border-radius: 999px;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
-    .nav-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid rgba(57, 255, 20, 0.58);
-      background: transparent;
-      color: #39FF14;
-      cursor: pointer;
-      font-size: 18px;
-      font-weight: 800;
-      line-height: 1;
-    }
-    .nav-btn:hover {
-      background: #39FF14;
-      color: #000;
-      box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
-    }
-    .slide-indicator {
-      min-width: 82px;
-      text-align: center;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 14px;
-      font-weight: 800;
-      letter-spacing: 2px;
-    }
-    .slide-indicator .current {
-      color: #39FF14;
-      font-size: 20px;
-    }
     .fullscreen-btn {
       position: fixed;
       top: 20px;
       left: 20px;
-      z-index: 100;
+      z-index: 200;
       border: 1px solid rgba(57, 255, 20, 0.34);
       border-radius: 999px;
       padding: 8px 14px;
@@ -117,6 +77,11 @@
       font-size: 12px;
       font-weight: 800;
       letter-spacing: 1px;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .fullscreen-btn:hover {
+      background: rgba(57, 255, 20, 0.2);
+      border-color: #39FF14;
     }
     .keyboard-hint {
       position: fixed;
@@ -127,6 +92,7 @@
       font-size: 12px;
       font-weight: 700;
       letter-spacing: 1px;
+      pointer-events: none;
     }
     @media (max-width: 768px) {
       .keyboard-hint { display: none; }
@@ -136,33 +102,16 @@
         padding: 7px 12px;
         font-size: 11px;
       }
-      .nav-controls {
-        bottom: max(18px, env(safe-area-inset-bottom));
-        gap: 14px;
-        padding: 10px 18px;
-      }
-      .nav-btn {
-        width: 38px;
-        height: 38px;
-      }
     }
   </style>
 </head>
 <body>
   <div class="progress-bar" id="progressBar"></div>
-  <button class="fullscreen-btn" type="button" onclick="toggleFullscreen()">FULLSCREEN</button>
-  <div class="keyboard-hint">ARROWS TO NAVIGATE</div>
+  <button class="fullscreen-btn" type="button" id="fsBtn">FULLSCREEN</button>
+  <div class="keyboard-hint">ARROWS TO NAVIGATE  ·  TAP LEFT/RIGHT</div>
 
   <div class="stage" id="stage">
     <div class="presentation-container" id="container"></div>
-  </div>
-
-  <div class="nav-controls">
-    <button class="nav-btn" type="button" onclick="prevSlide()" aria-label="Previous slide">&lt;</button>
-    <div class="slide-indicator">
-      <span class="current" id="currentNum">01</span> / <span id="totalNum">16</span>
-    </div>
-    <button class="nav-btn" type="button" onclick="nextSlide()" aria-label="Next slide">&gt;</button>
   </div>
 
   <script>
@@ -193,8 +142,6 @@
 
     const container = document.getElementById('container');
     const stage = document.getElementById('stage');
-    const currentNum = document.getElementById('currentNum');
-    const totalNum = document.getElementById('totalNum');
     const progressBar = document.getElementById('progressBar');
 
     const slideFrame = document.createElement('iframe');
@@ -203,8 +150,6 @@
     slideFrame.style.width = SLIDE_W + 'px';
     slideFrame.style.height = SLIDE_H + 'px';
     container.appendChild(slideFrame);
-
-    totalNum.textContent = String(slides.length).padStart(2, '0');
 
     function scaleToFit() {
       const scaleX = window.innerWidth / SLIDE_W;
@@ -232,7 +177,6 @@
         slideFrame.classList.add('active');
       }
 
-      currentNum.textContent = String(index + 1).padStart(2, '0');
       progressBar.style.width = ((index + 1) / slides.length * 100) + '%';
     }
 
@@ -251,6 +195,12 @@
         document.exitFullscreen();
       }
     }
+
+    // Fullscreen button
+    document.getElementById('fsBtn').addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleFullscreen();
+    });
 
     window.addEventListener('resize', scaleToFit);
     window.addEventListener('orientationchange', scaleToFit);
@@ -271,14 +221,47 @@
       }
     });
 
+    // Click/tap to advance: right half = next, left half = prev
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchMoved = false;
+    const SWIPE_THRESHOLD = 50;
+
     stage.addEventListener('click', (event) => {
-      if (event.target.tagName === 'BUTTON') return;
+      if (touchMoved) { touchMoved = false; return; }
       if (event.clientX > window.innerWidth / 2) {
         nextSlide();
       } else {
         prevSlide();
       }
     });
+
+    // Touch swipe support for mobile
+    stage.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+      touchMoved = false;
+    }, { passive: true });
+
+    stage.addEventListener('touchmove', (e) => {
+      const dx = Math.abs(e.touches[0].clientX - touchStartX);
+      const dy = Math.abs(e.touches[0].clientY - touchStartY);
+      if (dx > 10 || dy > 10) touchMoved = true;
+    }, { passive: true });
+
+    stage.addEventListener('touchend', (e) => {
+      if (!touchMoved) return;
+      const dx = e.changedTouches[0].clientX - touchStartX;
+      const dy = Math.abs(e.changedTouches[0].clientY - touchStartY);
+      if (Math.abs(dx) > SWIPE_THRESHOLD && Math.abs(dx) > dy) {
+        if (dx < 0) {
+          nextSlide();
+        } else {
+          prevSlide();
+        }
+      }
+      touchMoved = false;
+    }, { passive: true });
 
     scaleToFit();
     showSlide(0);
