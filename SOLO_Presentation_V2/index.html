@@ -336,7 +336,7 @@
     // ============================================
     // PDF DOWNLOAD
     // ============================================
-    function loadScript(src) {
+    async function loadScript(src) {
       return new Promise((resolve, reject) => {
         if (document.querySelector(`script[data-src="${src}"]`)) { resolve(); return; }
         const s = document.createElement('script');
@@ -348,22 +348,28 @@
       });
     }
     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-    function waitForFrameLoad(frame, timeoutMs = 15000) {
+    function waitForFrameLoad(frame, timeoutMs = 20000) {
       return new Promise((resolve) => {
         let done = false;
         const to = setTimeout(() => { if (!done) { done = true; resolve(); } }, timeoutMs);
-        frame.onload = () => { clearTimeout(to); if (!done) { done = true; resolve(); } };
+        const handler = () => { clearTimeout(to); if (!done) { done = true; resolve(); } };
+        frame.onload = handler;
+        try { frame.addEventListener('load', handler, { once: true }); } catch(e) {}
       });
     }
-    function waitForImages(win, timeoutMs = 8000) {
+    function waitForImages(doc, timeoutMs = 10000) {
       return new Promise((resolve) => {
         const start = Date.now();
         function check() {
-          const imgs = win.document.querySelectorAll('img');
+          const imgs = doc.querySelectorAll('img');
           let allLoaded = true;
-          imgs.forEach(img => { if (!img.complete) allLoaded = false; });
+          imgs.forEach(img => { if (!img.complete || img.naturalWidth === 0) allLoaded = false; });
+          if (allLoaded && Date.now() - start < 500) {
+            setTimeout(resolve, 200);
+            return;
+          }
           if (allLoaded || Date.now() - start > timeoutMs) resolve();
-          else setTimeout(check, 150);
+          else setTimeout(check, 200);
         }
         check();
       });
@@ -384,27 +390,26 @@
           transition-duration: 0s !important;
           transition-delay: 0s !important;
         }
-        html, body { overflow: hidden !important; }
+        html, body { overflow: hidden !important; width: 1920px !important; height: 1080px !important; margin: 0 !important; padding: 0 !important; }
       `;
       doc.head.appendChild(style);
       try {
         doc.querySelectorAll('*').forEach(el => {
-          try {
-            if (el.getAnimations) el.getAnimations().forEach(a => { try { a.finish(); } catch(e) {} });
-          } catch(e) {}
+          try { if (el.getAnimations) el.getAnimations().forEach(a => { try { a.finish(); } catch(e) {} }); } catch(e) {}
         });
       } catch(e) {}
     }
-    function injectHtml2Canvas(frame) {
-      return new Promise((resolve, reject) => {
-        const win = frame.contentWindow;
-        if (win.html2canvas) { resolve(); return; }
-        const s = win.document.createElement('script');
-        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        s.onload = resolve;
-        s.onerror = reject;
-        win.document.head.appendChild(s);
-      });
+    async function ensureHtml2CanvasInFrame(frame) {
+      const win = frame.contentWindow;
+      if (win.html2canvas) return win.html2canvas;
+      if (!window.html2canvas) {
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      }
+      const s = win.document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      win.document.head.appendChild(s);
+      await new Promise((res) => { s.onload = res; setTimeout(res, 8000); });
+      return win.html2canvas;
     }
     function showPdfProgress(text, pct) {
       let el = document.getElementById('pdfProgress');
@@ -419,45 +424,68 @@
       el.querySelector('.pbar-fill').style.width = (pct != null ? pct : 0) + '%';
       return el;
     }
-    function hidePdfProgress() { const el = document.getElementById('pdfProgress'); if (el) el.remove(); }
+    function hidePdfProgress() {
+      const el = document.getElementById('pdfProgress'); if (el) el.remove();
+      const c = document.getElementById('pdfCurtain'); if (c) c.remove();
+    }
+    function showCurtain() {
+      let c = document.getElementById('pdfCurtain');
+      if (!c) {
+        c = document.createElement('div');
+        c.id = 'pdfCurtain';
+        c.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9997;';
+        document.body.appendChild(c);
+      }
+    }
 
     async function generatePDF() {
       const btn = document.getElementById('pdfBtn');
       btn.disabled = true;
       btn.textContent = '⏳ 生成中...';
+      const savedSlide = currentSlide;
       try {
-        showPdfProgress('正在加载 PDF 组件...', 0);
-        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'] });
+        showPdfProgress('正在准备 PDF 渲染引擎...', 0);
+        showCurtain();
+        await sleep(100);
 
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'], compress: true });
+
+        // ON-SCREEN iframe at top-left (behind curtain), browser paints it
         const frame = document.createElement('iframe');
-        frame.style.cssText = 'position:fixed;left:-20000px;top:0;width:1920px;height:1080px;border:0;margin:0;padding:0;';
+        frame.style.cssText = 'position:fixed;left:0;top:0;width:1920px;height:1080px;border:0;margin:0;padding:0;z-index:9996;';
         frame.setAttribute('scrolling', 'no');
         document.body.appendChild(frame);
 
         for (let i = 0; i < slides.length; i++) {
-          showPdfProgress(`正在生成 PDF... (${i+1}/${slides.length})`, Math.round((i / slides.length) * 100));
+          showPdfProgress(`正在渲染第 ${i+1} / ${slides.length} 页...`, Math.round((i / slides.length) * 100));
           frame.src = slides[i];
-          await waitForFrameLoad(frame, 15000);
-          await sleep(1800);
-          await waitForImages(frame.contentWindow, 6000);
+          await waitForFrameLoad(frame, 20000);
+          await sleep(2200);
+          await waitForImages(frame.contentDocument, 8000);
           injectAnimationFreeze(frame.contentWindow);
-          await sleep(300);
-          try { await injectHtml2Canvas(frame); } catch(e) {}
-          const h2c = frame.contentWindow.html2canvas || window.html2canvas;
-          const canvas = await h2c(frame.contentDocument.body, {
+          await sleep(400);
+
+          let h2c;
+          try { h2c = await ensureHtml2CanvasInFrame(frame); } catch(e) { h2c = window.html2canvas; }
+          if (!h2c) throw new Error('html2canvas 加载失败');
+
+          const canvas = await h2c(frame.contentDocument.documentElement, {
             width: 1920, height: 1080, windowWidth: 1920, windowHeight: 1080,
             scale: 1, useCORS: true, allowTaint: true,
-            backgroundColor: '#000000', logging: false, removeContainer: true
+            backgroundColor: '#000000', logging: false, removeContainer: false,
+            foreignObjectRendering: false, imageTimeout: 15000
           });
-          const imgData = canvas.toDataURL('image/jpeg', 0.9);
+          const imgData = canvas.toDataURL('image/jpeg', 0.92);
           if (i > 0) pdf.addPage([1920, 1080], 'landscape');
           pdf.addImage(imgData, 'JPEG', 0, 0, 1920, 1080);
         }
         document.body.removeChild(frame);
         showPdfProgress('正在保存 PDF...', 100);
-        await sleep(300);
+        await sleep(200);
         pdf.save('SOLO_Back_To_The_Future_Sneakers_V2.pdf');
         hidePdfProgress();
         showToast('PDF 下载已开始！');
@@ -468,6 +496,7 @@
       } finally {
         btn.disabled = false;
         btn.textContent = '📄 PDF';
+        if (savedSlide !== currentSlide) showSlide(savedSlide);
       }
     }
     document.getElementById('pdfBtn').addEventListener('click', (e) => {

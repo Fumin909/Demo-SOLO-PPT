@@ -385,7 +385,9 @@
     // ============================================
     // PDF DOWNLOAD
     // ============================================
-    function loadScript(src) {
+    let _h2cBlobUrl = null;
+
+    async function loadScript(src) {
       return new Promise((resolve, reject) => {
         if (document.querySelector(`script[data-src="${src}"]`)) { resolve(); return; }
         const s = document.createElement('script');
@@ -399,23 +401,43 @@
 
     function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-    function waitForFrameLoad(frame, timeoutMs = 15000) {
+    function waitForFrameLoad(frame, timeoutMs = 20000) {
       return new Promise((resolve) => {
         let done = false;
         const to = setTimeout(() => { if (!done) { done = true; resolve(); } }, timeoutMs);
-        frame.onload = () => { clearTimeout(to); if (!done) { done = true; resolve(); } };
+        const handler = () => { clearTimeout(to); if (!done) { done = true; resolve(); } };
+        frame.onload = handler;
+        // Also listen for load event via addEventListener as backup
+        try { frame.addEventListener('load', handler, { once: true }); } catch(e) {}
       });
     }
 
-    function waitForImages(win, timeoutMs = 8000) {
+    function waitForImages(doc, timeoutMs = 10000) {
       return new Promise((resolve) => {
         const start = Date.now();
         function check() {
-          const imgs = win.document.querySelectorAll('img');
+          const imgs = doc.querySelectorAll('img');
           let allLoaded = true;
-          imgs.forEach(img => { if (!img.complete) allLoaded = false; });
+          imgs.forEach(img => { if (!img.complete || img.naturalWidth === 0) allLoaded = false; });
+          // Also check background images on all elements
+          if (allLoaded && Date.now() - start < 500) {
+            // Give a tiny extra wait for bg images
+            setTimeout(() => {
+              let allBgLoaded = true;
+              doc.querySelectorAll('*').forEach(el => {
+                try {
+                  const bg = doc.defaultView.getComputedStyle(el).backgroundImage;
+                  if (bg && bg !== 'none' && bg.startsWith('url(')) {
+                    // Can't easily check bg image load state; just wait
+                  }
+                } catch(e) {}
+              });
+              resolve();
+            }, 200);
+            return;
+          }
           if (allLoaded || Date.now() - start > timeoutMs) resolve();
-          else setTimeout(check, 150);
+          else setTimeout(check, 200);
         }
         check();
       });
@@ -437,34 +459,44 @@
           transition-duration: 0s !important;
           transition-delay: 0s !important;
         }
-        html, body { overflow: hidden !important; }
+        html, body { overflow: hidden !important; width: 1920px !important; height: 1080px !important; margin: 0 !important; padding: 0 !important; }
       `;
       doc.head.appendChild(style);
-      // Force all animations to final state
+      // Force animations to final state
       try {
-        const els = doc.querySelectorAll('*');
-        els.forEach(el => {
+        doc.querySelectorAll('*').forEach(el => {
           try {
-            const cs = win.getComputedStyle(el);
-            if (cs.animationName && cs.animationName !== 'none') {
-              const anims = el.getAnimations ? el.getAnimations() : [];
-              anims.forEach(a => { try { a.finish(); } catch(e) {} });
-            }
+            if (el.getAnimations) el.getAnimations().forEach(a => { try { a.finish(); } catch(e) {} });
           } catch(e) {}
         });
+        if (win.documentElement.getAnimations) {
+          win.documentElement.getAnimations().forEach(a => { try { a.finish(); } catch(e) {} });
+        }
       } catch(e) {}
     }
 
-    function injectHtml2Canvas(frame) {
-      return new Promise((resolve, reject) => {
-        const win = frame.contentWindow;
-        if (win.html2canvas) { resolve(); return; }
+    async function ensureHtml2CanvasInFrame(frame) {
+      const win = frame.contentWindow;
+      if (win.html2canvas) return win.html2canvas;
+      // If parent already loaded html2canvas, inject its code via blob
+      if (window.html2canvas) {
+        const script = win.document.createElement('script');
+        script.textContent = '(' + window.html2canvas.toString().startsWith('function') ? '' : '';
+        // Better approach: load via src from parent-loaded script
         const s = win.document.createElement('script');
         s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-        s.onload = resolve;
-        s.onerror = reject;
         win.document.head.appendChild(s);
-      });
+        await new Promise((res, rej) => { s.onload = res; s.onerror = rej; setTimeout(res, 8000); });
+        return win.html2canvas;
+      }
+      // Load in parent first
+      await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+      // Now inject into iframe
+      const s = win.document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+      win.document.head.appendChild(s);
+      await new Promise((res, rej) => { s.onload = res; s.onerror = rej; setTimeout(res, 8000); });
+      return win.html2canvas;
     }
 
     function showPdfProgress(text, pct) {
@@ -478,14 +510,25 @@
       }
       el.querySelector('.pdf-text').textContent = text;
       const fill = el.querySelector('.pbar-fill');
-      if (pct != null) fill.style.width = pct + '%';
-      else fill.style.width = '0%';
+      fill.style.width = (pct != null ? pct : 0) + '%';
       return el;
     }
 
     function hidePdfProgress() {
       const el = document.getElementById('pdfProgress');
       if (el) el.remove();
+      const curtain = document.getElementById('pdfCurtain');
+      if (curtain) curtain.remove();
+    }
+
+    function showCurtain() {
+      let c = document.getElementById('pdfCurtain');
+      if (!c) {
+        c = document.createElement('div');
+        c.id = 'pdfCurtain';
+        c.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;background:#000;z-index:9997;';
+        document.body.appendChild(c);
+      }
     }
 
     async function generatePDF() {
@@ -493,38 +536,57 @@
       btn.disabled = true;
       btn.textContent = '⏳ 生成中...';
 
+      // Save current slide to restore later
+      const savedSlide = currentSlide;
+
       try {
-        showPdfProgress('正在加载 PDF 组件...', 0);
+        showPdfProgress('正在准备 PDF 渲染引擎...', 0);
+        showCurtain();
+        await sleep(100);
+
+        // Load libs
         await loadScript('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js');
+        await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
 
         const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'] });
+        const pdf = new jsPDF({ orientation: 'landscape', unit: 'px', format: [1920, 1080], hotfixes: ['px_scaling'], compress: true });
 
-        // Create hidden render iframe at exact 1920x1080
+        // Create ON-SCREEN render iframe at exact 1920x1080 (top-left corner)
+        // It's behind the black curtain so user can't see it, but browser DOES render it
         const frame = document.createElement('iframe');
-        frame.style.cssText = 'position:fixed;left:-20000px;top:0;width:1920px;height:1080px;border:0;margin:0;padding:0;';
+        frame.style.cssText = 'position:fixed;left:0;top:0;width:1920px;height:1080px;border:0;margin:0;padding:0;z-index:9996;opacity:1;';
         frame.setAttribute('scrolling', 'no');
         document.body.appendChild(frame);
 
         for (let i = 0; i < slides.length; i++) {
-          showPdfProgress(`正在生成 PDF... (${i+1}/${slides.length})`, Math.round((i / slides.length) * 100));
+          showPdfProgress(`正在渲染第 ${i+1} / ${slides.length} 页...`, Math.round((i / slides.length) * 100));
 
+          // Navigate iframe to slide
           frame.src = slides[i];
-          await waitForFrameLoad(frame, 15000);
-          await sleep(1800); // wait for CSS animations to complete
-          await waitForImages(frame.contentWindow, 6000);
-          injectAnimationFreeze(frame.contentWindow);
-          await sleep(300);
+          await waitForFrameLoad(frame, 20000);
 
+          // Wait for CSS animations to settle and images to load
+          await sleep(2200);
+          await waitForImages(frame.contentDocument, 8000);
+
+          // Freeze animations at final state
+          injectAnimationFreeze(frame.contentWindow);
+          await sleep(400);
+
+          // Ensure html2canvas is available in iframe context
+          let h2c;
           try {
-            await injectHtml2Canvas(frame);
+            h2c = await ensureHtml2CanvasInFrame(frame);
           } catch(e) {
-            console.warn('html2canvas inject failed, trying parent instance');
+            console.warn('html2canvas inject failed, using parent:', e);
+            h2c = window.html2canvas;
           }
 
-          const h2c = frame.contentWindow.html2canvas || window.html2canvas;
-          const body = frame.contentDocument.body;
-          const canvas = await h2c(body, {
+          if (!h2c) throw new Error('html2canvas 加载失败');
+
+          // Capture the iframe's html element (not just body, to ensure full size)
+          const target = frame.contentDocument.documentElement;
+          const canvas = await h2c(target, {
             width: 1920,
             height: 1080,
             windowWidth: 1920,
@@ -534,27 +596,32 @@
             allowTaint: true,
             backgroundColor: '#000000',
             logging: false,
-            removeContainer: true
+            removeContainer: false,
+            foreignObjectRendering: false,
+            imageTimeout: 15000
           });
 
-          const imgData = canvas.toDataURL('image/jpeg', 0.9);
+          const imgData = canvas.toDataURL('image/jpeg', 0.92);
           if (i > 0) pdf.addPage([1920, 1080], 'landscape');
           pdf.addImage(imgData, 'JPEG', 0, 0, 1920, 1080);
         }
 
+        // Cleanup
         document.body.removeChild(frame);
         showPdfProgress('正在保存 PDF...', 100);
-        await sleep(300);
+        await sleep(200);
         pdf.save('SOLO_Back_To_The_Future_Sneakers.pdf');
         hidePdfProgress();
         showToast('PDF 下载已开始！');
       } catch(err) {
         console.error('PDF generation error:', err);
         hidePdfProgress();
-        showToast('PDF 生成失败，请重试。错误：' + err.message);
+        showToast('PDF 生成失败：' + err.message);
       } finally {
         btn.disabled = false;
         btn.textContent = '📄 PDF';
+        // Restore original slide
+        if (savedSlide !== currentSlide) showSlide(savedSlide);
       }
     }
 
