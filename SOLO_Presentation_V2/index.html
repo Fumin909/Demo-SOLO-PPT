@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Back To The Future Sneakers V2</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000;
+      color: #fff;
+      font-family: Inter, Helvetica, Arial, sans-serif;
+    }
+    .stage {
+      position: fixed;
+      inset: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100svh;
+      height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      background: #000;
+    }
+    .presentation-container {
+      position: absolute;
+      width: 1920px;
+      height: 1080px;
+      transform-origin: center center;
+      background: #000;
+      will-change: transform;
+    }
+    .slide-frame {
+      position: absolute;
+      inset: 0;
+      width: 1920px;
+      height: 1080px;
+      border: 0;
+      opacity: 0;
+      transition: opacity 0.45s ease;
+      pointer-events: none;
+    }
+    .slide-frame.active {
+      opacity: 1;
+    }
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #39FF14, #FF1493);
+      z-index: 100;
+      transition: width 0.35s ease;
+      box-shadow: 0 0 14px rgba(57, 255, 20, 0.55);
+    }
+    .nav-controls {
+      position: fixed;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 12px 22px;
+      border: 1px solid rgba(57, 255, 20, 0.34);
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .nav-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid rgba(57, 255, 20, 0.58);
+      background: transparent;
+      color: #39FF14;
+      cursor: pointer;
+      font-size: 18px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .nav-btn:hover {
+      background: #39FF14;
+      color: #000;
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+    }
+    .slide-indicator {
+      min-width: 82px;
+      text-align: center;
+      color: rgba(255, 255, 255, 0.86);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 2px;
+    }
+    .slide-indicator .current {
+      color: #39FF14;
+      font-size: 20px;
+    }
+    .fullscreen-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 100;
+      border: 1px solid rgba(57, 255, 20, 0.34);
+      border-radius: 999px;
+      padding: 8px 14px;
+      background: rgba(0, 0, 0, 0.55);
+      color: #39FF14;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .keyboard-hint {
+      position: fixed;
+      top: 22px;
+      right: 22px;
+      z-index: 100;
+      color: rgba(255, 255, 255, 0.42);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 768px) {
+      .keyboard-hint { display: none; }
+      .fullscreen-btn {
+        top: max(14px, env(safe-area-inset-top));
+        left: 14px;
+        padding: 7px 12px;
+        font-size: 11px;
+      }
+      .nav-controls {
+        bottom: max(18px, env(safe-area-inset-bottom));
+        gap: 14px;
+        padding: 10px 18px;
+      }
+      .nav-btn {
+        width: 38px;
+        height: 38px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar"></div>
+  <button class="fullscreen-btn" type="button" onclick="toggleFullscreen()">FULLSCREEN</button>
+  <div class="keyboard-hint">ARROWS TO NAVIGATE</div>
+
+  <div class="stage" id="stage">
+    <div class="presentation-container" id="container"></div>
+  </div>
+
+  <div class="nav-controls">
+    <button class="nav-btn" type="button" onclick="prevSlide()" aria-label="Previous slide">&lt;</button>
+    <div class="slide-indicator">
+      <span class="current" id="currentNum">01</span> / <span id="totalNum">16</span>
+    </div>
+    <button class="nav-btn" type="button" onclick="nextSlide()" aria-label="Next slide">&gt;</button>
+  </div>
+
+  <script>
+    const slides = [
+      'pages/cover.html',
+      'pages/about.html',
+      'pages/founders.html',
+      'pages/problems.html',
+      'pages/solutions.html',
+      'pages/product.html',
+      'pages/materials.html',
+      'pages/consumer.html',
+      'pages/marketing.html',
+      'pages/usp.html',
+      'pages/creator.html',
+      'pages/sustainable.html',
+      'pages/investment.html',
+      'pages/growth.html',
+      'pages/logo.html',
+      'pages/thankyou.html'
+    ];
+
+    const SLIDE_W = 1920;
+    const SLIDE_H = 1080;
+
+    let currentSlide = 0;
+    let activeSrc = '';
+
+    const container = document.getElementById('container');
+    const stage = document.getElementById('stage');
+    const currentNum = document.getElementById('currentNum');
+    const totalNum = document.getElementById('totalNum');
+    const progressBar = document.getElementById('progressBar');
+
+    const slideFrame = document.createElement('iframe');
+    slideFrame.className = 'slide-frame';
+    slideFrame.setAttribute('scrolling', 'no');
+    slideFrame.style.width = SLIDE_W + 'px';
+    slideFrame.style.height = SLIDE_H + 'px';
+    container.appendChild(slideFrame);
+
+    totalNum.textContent = String(slides.length).padStart(2, '0');
+
+    function scaleToFit() {
+      const scaleX = window.innerWidth / SLIDE_W;
+      const scaleY = window.innerHeight / SLIDE_H;
+      const scale = Math.min(scaleX, scaleY);
+      container.style.transform = 'scale(' + scale + ')';
+    }
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= slides.length) index = slides.length - 1;
+      currentSlide = index;
+
+      const nextSrc = slides[index];
+      slideFrame.classList.remove('active');
+      if (activeSrc !== nextSrc) {
+        activeSrc = nextSrc;
+        slideFrame.onload = () => {
+          if (activeSrc === nextSrc) {
+            slideFrame.classList.add('active');
+          }
+        };
+        slideFrame.src = nextSrc;
+      } else {
+        slideFrame.classList.add('active');
+      }
+
+      currentNum.textContent = String(index + 1).padStart(2, '0');
+      progressBar.style.width = ((index + 1) / slides.length * 100) + '%';
+    }
+
+    function nextSlide() {
+      if (currentSlide < slides.length - 1) showSlide(currentSlide + 1);
+    }
+
+    function prevSlide() {
+      if (currentSlide > 0) showSlide(currentSlide - 1);
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('resize', scaleToFit);
+    window.addEventListener('orientationchange', scaleToFit);
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'ArrowRight' || event.key === ' ' || event.key === 'Enter') {
+        event.preventDefault();
+        nextSlide();
+      } else if (event.key === 'ArrowLeft' || event.key === 'Backspace') {
+        event.preventDefault();
+        prevSlide();
+      } else if (event.key === 'Home') {
+        showSlide(0);
+      } else if (event.key === 'End') {
+        showSlide(slides.length - 1);
+      } else if (event.key === 'f' || event.key === 'F') {
+        toggleFullscreen();
+      }
+    });
+
+    stage.addEventListener('click', (event) => {
+      if (event.target.tagName === 'BUTTON') return;
+      if (event.clientX > window.innerWidth / 2) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    });
+
+    scaleToFit();
+    showSlide(0);
+  </script>
+</body>
+</html>

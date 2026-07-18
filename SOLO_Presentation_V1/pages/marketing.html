@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Marketing &amp; Distribution</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 09 - Marketing & Distribution specific styles */
+
+    .slide-marketing {
+      background: #0A0A0A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Full-screen background image */
+    .marketing-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .marketing-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .marketing-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(10,10,10,0.88) 0%, rgba(10,10,10,0.75) 50%, rgba(10,10,10,0.9) 100%);
+    }
+
+    /* Subtle grid texture overlay */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(var(--solo-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--solo-primary) 1px, transparent 1px);
+      background-size: 80px 80px;
+      pointer-events: none;
+    }
+
+    /* Corner frames */
+    .corner-frame {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+    }
+    .corner-frame.tl {
+      top: 40px;
+      left: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.tr {
+      top: 40px;
+      right: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Brand mini top right */
+    .brand-mini {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Header / Title area */
+    .marketing-header {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+    }
+
+    .title-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .marketing-header .section-title {
+      color: var(--solo-text);
+      position: relative;
+    }
+
+    .marketing-header .section-title .accent-word {
+      color: var(--solo-primary);
+      text-shadow: 0 0 40px var(--solo-primary-glow);
+    }
+
+    /* Two-column content container */
+    .two-col-container {
+      position: absolute;
+      top: 280px;
+      left: 100px;
+      right: 100px;
+      bottom: 140px;
+      z-index: 10;
+      display: flex;
+      gap: 60px;
+      align-items: stretch;
+    }
+
+    /* Glassmorphism card */
+    .glass-card {
+      flex: 1;
+      position: relative;
+      background: rgba(20, 20, 20, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 50px 56px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+    }
+
+    /* Card accent glow corners */
+    .glass-card.green-card {
+      border-color: rgba(57, 255, 20, 0.2);
+      box-shadow:
+        0 0 60px rgba(57, 255, 20, 0.06),
+        inset 0 1px 0 rgba(57, 255, 20, 0.1);
+    }
+
+    .glass-card.pink-card {
+      border-color: rgba(255, 0, 255, 0.2);
+      box-shadow:
+        0 0 60px rgba(255, 0, 255, 0.06),
+        inset 0 1px 0 rgba(255, 0, 255, 0.1);
+    }
+
+    /* Corner accent on card */
+    .card-corner {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+    }
+    .card-corner.tl {
+      top: 16px;
+      left: 16px;
+      border-top: 2px solid;
+      border-left: 2px solid;
+    }
+    .card-corner.br {
+      bottom: 16px;
+      right: 16px;
+      border-bottom: 2px solid;
+      border-right: 2px solid;
+    }
+    .green-card .card-corner {
+      border-color: var(--solo-primary);
+      opacity: 0.5;
+      box-shadow: -2px -2px 10px var(--solo-primary-glow);
+    }
+    .green-card .card-corner.br {
+      box-shadow: 2px 2px 10px var(--solo-primary-glow);
+    }
+    .pink-card .card-corner {
+      border-color: var(--solo-accent);
+      opacity: 0.5;
+      box-shadow: -2px -2px 10px var(--solo-accent-glow);
+    }
+    .pink-card .card-corner.br {
+      box-shadow: 2px 2px 10px var(--solo-accent-glow);
+    }
+
+    /* Card label */
+    .card-label {
+      display: inline-block;
+      padding: 10px 24px;
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      border-radius: var(--radius-full);
+      margin-bottom: 36px;
+      align-self: flex-start;
+    }
+
+    .card-label.green {
+      background: var(--solo-primary);
+      color: var(--solo-bg-dark);
+      box-shadow: 0 0 24px var(--solo-primary-glow);
+    }
+
+    .card-label.pink {
+      background: var(--solo-accent);
+      color: var(--solo-bg-dark);
+      box-shadow: 0 0 24px var(--solo-accent-glow);
+    }
+
+    /* Large category heading inside card */
+    .card-heading {
+      font-family: var(--font-display);
+      font-size: 44px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--solo-text);
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+
+    .green-card .card-heading .hl {
+      color: var(--solo-primary);
+      text-shadow: 0 0 30px var(--solo-primary-glow);
+    }
+
+    .pink-card .card-heading .hl {
+      color: var(--solo-accent);
+      text-shadow: 0 0 30px var(--solo-accent-glow);
+    }
+
+    .card-sub {
+      font-size: 16px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      margin-bottom: 40px;
+    }
+
+    /* Items list */
+    .items-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      flex: 1;
+    }
+
+    .item-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 24px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .item-row:last-child {
+      border-bottom: none;
+    }
+
+    /* Neon bullet */
+    .item-bullet {
+      flex-shrink: 0;
+      width: 14px;
+      height: 14px;
+      margin-top: 6px;
+      position: relative;
+    }
+
+    .item-bullet::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 10px;
+      height: 10px;
+      transform: rotate(45deg);
+    }
+
+    .item-bullet::after {
+      content: '';
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      width: 16px;
+      height: 16px;
+      transform: rotate(45deg);
+      opacity: 0.25;
+    }
+
+    .green-card .item-bullet::before {
+      background: var(--solo-primary);
+      box-shadow: 0 0 12px var(--solo-primary-glow);
+    }
+    .green-card .item-bullet::after {
+      background: var(--solo-primary);
+      filter: blur(6px);
+    }
+
+    .pink-card .item-bullet::before {
+      background: var(--solo-accent);
+      box-shadow: 0 0 12px var(--solo-accent-glow);
+    }
+    .pink-card .item-bullet::after {
+      background: var(--solo-accent);
+      filter: blur(6px);
+    }
+
+    .item-text {
+      flex: 1;
+    }
+
+    .item-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--solo-text);
+      line-height: 1.3;
+      margin-bottom: 6px;
+      letter-spacing: 0.3px;
+    }
+
+    .item-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+    }
+
+    /* Center vertical divider with neon glow */
+    .center-divider {
+      position: absolute;
+      top: 320px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      bottom: 180px;
+      z-index: 11;
+      background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        var(--solo-primary) 15%,
+        var(--solo-accent) 50%,
+        var(--solo-primary) 85%,
+        transparent 100%
+      );
+      opacity: 0.6;
+      box-shadow:
+        0 0 12px var(--solo-primary-glow),
+        0 0 20px var(--solo-accent-glow);
+    }
+
+    .center-divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      background: var(--solo-text);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 3px rgba(255,255,255,0.1),
+        0 0 20px var(--solo-primary-glow),
+        0 0 30px var(--solo-accent-glow);
+    }
+
+    .center-divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      z-index: 2;
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+    }
+
+    /* Small decorative tech elements */
+    .tech-accent {
+      position: absolute;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .tech-circle {
+      border: 1px solid var(--solo-primary);
+      border-radius: 50%;
+      opacity: 0.15;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .tech-circle.one {
+      top: 80px;
+      right: 260px;
+      width: 160px;
+      height: 160px;
+    }
+
+    .tech-circle.two {
+      bottom: 100px;
+      left: 220px;
+      width: 100px;
+      height: 100px;
+      border-color: var(--solo-accent);
+      box-shadow: 0 0 20px var(--solo-accent-glow);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes dividerGrow {
+      from { opacity: 0; transform: translateX(-50%) scaleY(0); }
+      to { opacity: 0.6; transform: translateX(-50%) scaleY(1); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .marketing-header { animation: fadeInUp 0.8s ease-out forwards; }
+    .glass-card.green-card { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+    .glass-card.pink-card { animation: fadeInUp 0.8s ease-out 0.35s forwards; opacity: 0; }
+    .center-divider {
+      animation: dividerGrow 1s ease-out 0.5s forwards;
+      transform-origin: center;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide slide-marketing">
+
+    <!-- Background image with overlay -->
+    <div class="marketing-bg">
+      <img src="../assets/images/slide-marketing.jpg" alt="Marketing and distribution">
+      <div class="marketing-bg-overlay"></div>
+    </div>
+
+    <!-- Grid overlay texture -->
+    <div class="grid-overlay"></div>
+
+    <!-- Decorative tech circles -->
+    <div class="tech-accent tech-circle one"></div>
+    <div class="tech-accent tech-circle two"></div>
+
+    <!-- Corner frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Brand mini -->
+    <div class="brand-mini">SOLO</div>
+
+    <!-- Header -->
+    <div class="marketing-header">
+      <div class="title-bar"></div>
+      <h2 class="section-title">MARKETING <span class="accent-word">&amp;</span> DISTRIBUTION</h2>
+    </div>
+
+    <!-- Center vertical divider -->
+    <div class="center-divider"></div>
+
+    <!-- Two column content -->
+    <div class="two-col-container">
+
+      <!-- LEFT: Marketing Methods -->
+      <div class="glass-card green-card">
+        <div class="card-corner tl"></div>
+        <div class="card-corner br"></div>
+
+        <span class="card-label green">Marketing</span>
+        <h3 class="card-heading">REACH <span class="hl">THE</span> CROWD</h3>
+        <p class="card-sub">Methods &amp; Channels</p>
+
+        <ul class="items-list">
+          <li class="item-row">
+            <div class="item-bullet"></div>
+            <div class="item-text">
+              <div class="item-title">Campus Collaborations</div>
+              <p class="item-desc">Collaborate with college campus design majors to co-create limited editions and tap into Gen Z creativity.</p>
+            </div>
+          </li>
+          <li class="item-row">
+            <div class="item-bullet"></div>
+            <div class="item-text">
+              <div class="item-title">Sneaker Exhibitions</div>
+              <p class="item-desc">Participate in major sneakers exhibitions and trade shows to showcase products and build industry presence.</p>
+            </div>
+          </li>
+          <li class="item-row">
+            <div class="item-bullet"></div>
+            <div class="item-text">
+              <div class="item-title">Social Media</div>
+              <p class="item-desc">Dominate TikTok, Instagram, and Facebook with viral content, creator partnerships, and community-driven campaigns.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: Distribution Channels -->
+      <div class="glass-card pink-card">
+        <div class="card-corner tl"></div>
+        <div class="card-corner br"></div>
+
+        <span class="card-label pink">Distribution</span>
+        <h3 class="card-heading">GET <span class="hl">TO</span> MARKET</h3>
+        <p class="card-sub">Omnichannel Strategy</p>
+
+        <ul class="items-list">
+          <li class="item-row">
+            <div class="item-bullet"></div>
+            <div class="item-text">
+              <div class="item-title">Online Official Website</div>
+              <p class="item-desc">Direct-to-consumer e-commerce platform with custom design studio, global shipping, and exclusive drops.</p>
+            </div>
+          </li>
+          <li class="item-row">
+            <div class="item-bullet"></div>
+            <div class="item-text">
+              <div class="item-title">Offline Retail</div>
+              <p class="item-desc">Strategic placement in premium malls and sports equipment stores, delivering hands-on brand experience across key markets.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">09</span>
+    </div>
+
+  </div>
+</body>
+</html>

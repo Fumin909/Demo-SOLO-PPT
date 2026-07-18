@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page-bg { position:absolute; inset:0; background:#fff; z-index:0; }
+  .light-grid { position:absolute; right:0; top:0; width:580px; height:100%; background: linear-gradient(180deg, #f8f8f8 0%, #f0f0f0 100%); z-index:1; }
+  h1.title { position:absolute; top:50px; left:70px; font-family:'Anton',sans-serif; font-size:130px; color:#111; letter-spacing:4px; text-transform:uppercase; line-height:1; z-index:10; }
+  .dancer-img { position:absolute; right:180px; top:50%; transform:translateY(-50%); height:880px; z-index:5; }
+  .dancer-img img { height:100%; object-fit:contain; transform: scaleX(-1); }
+  .problem-item { position:absolute; z-index:10; max-width:500px; }
+  .problem-item .label {
+    background: var(--red-label); color:#fff; font-family:'Anton',sans-serif; font-size:44px;
+    letter-spacing:2px; text-transform:uppercase; padding:14px 28px; border-radius:22px 22px 22px 6px;
+    display:inline-block; line-height:1.2; margin-bottom:14px; position:relative;
+  }
+  .problem-item .label::after {
+    content:''; position:absolute; right:-10px; bottom:-8px; width:26px; height:26px;
+    background: var(--red-label); border-radius:0 0 18px 0; clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .problem-item p { font-family:'Inter',sans-serif; font-size:28px; font-weight:700; color:#111; line-height:1.45; padding-left:6px; }
+  .sol1 { top:240px; left:70px; }
+  .sol2 { top:540px; left:70px; }
+  .sol3 { top:380px; right:40px; max-width:480px; }
+  .sol3 .label { font-size:40px; border-radius:22px 6px 22px 22px; }
+  .sol3 .label::after { display:none; }
+  .sol3 .label::before {
+    content:''; position:absolute; left:-10px; bottom:-8px; width:26px; height:26px;
+    background: var(--red-label); border-radius:0 0 0 18px; clip-path: polygon(0 0, 100% 0, 0 100%);
+  }
+  .corner-logo { position:absolute; top:30px; right:40px; z-index:20; }
+  .corner-logo .solo-logo { position:static; font-size:56px; }
+  ul { list-style:none; padding:0; }
+  ul li { position:relative; padding-left:30px; margin-bottom:6px; }
+  ul li::before { content:'●'; position:absolute; left:0; top:0; color:#111; font-size:20px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="page-bg"></div>
+  <div class="light-grid"></div>
+  <h1 class="title">SOLUTIONS</h1>
+
+  <div class="dancer-img"><img src="../assets/dancer_silhouette.jpg" alt="Dancer"></div>
+
+  <div class="problem-item sol1">
+    <div class="label">CUSTOM DESIGNS</div>
+    <ul>
+      <li>Allow customers to personalize sneakers with custom colors and materials.</li>
+    </ul>
+  </div>
+
+  <div class="problem-item sol2">
+    <div class="label">ASIA-INSPIRED</div>
+    <ul>
+      <li>Create designs based on feedback from Asian markets, using local patterns and materials.</li>
+    </ul>
+  </div>
+
+  <div class="problem-item sol3">
+    <div class="label">AFFORDABLE & ECO-FRIENDLY</div>
+    <ul>
+      <li>Offer high-quality, affordable sneakers made from 100% recyclable materials.</li>
+    </ul>
+  </div>
+
+  <div class="corner-logo">
+    <div class="solo-logo"><span class="s-letter">S</span><span class="o1-letter">O</span><span class="l-letter">L</span><span class="o2-letter">O</span></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Competitive Advantages</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 10 - Competitive Advantages (USP) specific styles */
+
+    .slide-usp {
+      background: #0A0A0A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Full-screen background image with ecosystem visualization */
+    .usp-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .usp-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .usp-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(57, 255, 20, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 70% 60%, rgba(255, 0, 255, 0.06) 0%, transparent 50%),
+        linear-gradient(135deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.8) 50%, rgba(10,10,10,0.94) 100%);
+    }
+
+    /* Subtle grid texture */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(var(--solo-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--solo-primary) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Corner frames */
+    .corner-frame {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+    }
+    .corner-frame.tl {
+      top: 40px;
+      left: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.tr {
+      top: 40px;
+      right: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Brand mini */
+    .brand-mini {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Header section - top area */
+    .usp-header {
+      position: absolute;
+      top: 90px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+    }
+
+    .title-group {
+      flex: 1;
+    }
+
+    .title-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .usp-header .section-title {
+      color: var(--solo-text);
+      font-size: 64px;
+    }
+
+    /* Large USP abbreviation */
+    .usp-word {
+      font-family: var(--font-display);
+      font-size: 180px;
+      font-weight: 900;
+      line-height: 0.85;
+      letter-spacing: -4px;
+      color: var(--solo-primary);
+      text-shadow:
+        0 0 60px var(--solo-primary-glow),
+        0 0 120px rgba(57, 255, 20, 0.2);
+      text-transform: uppercase;
+      position: relative;
+      margin-left: 40px;
+      flex-shrink: 0;
+      -webkit-text-stroke: 2px var(--solo-primary);
+      paint-order: stroke fill;
+    }
+
+    .usp-word::before {
+      content: 'USP';
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(57, 255, 20, 0.3);
+      transform: translate(6px, 6px);
+      z-index: -1;
+      text-shadow: none;
+    }
+
+    /* Sub-label under USP */
+    .usp-sub-label {
+      position: absolute;
+      right: 100px;
+      top: 310px;
+      z-index: 10;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      text-align: right;
+    }
+
+    .usp-sub-label .line {
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: var(--solo-primary);
+      vertical-align: middle;
+      margin-left: 12px;
+      opacity: 0.5;
+    }
+
+    /* Advantages grid - 2x2 */
+    .advantages-grid {
+      position: absolute;
+      top: 380px;
+      left: 100px;
+      right: 100px;
+      bottom: 140px;
+      z-index: 10;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 28px;
+    }
+
+    /* Advantage card base */
+    .adv-card {
+      position: relative;
+      background: rgba(20, 20, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      gap: 28px;
+      overflow: hidden;
+      transition: border-color 0.3s ease;
+    }
+
+    .adv-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent-color, var(--solo-primary)), transparent);
+      opacity: 0.6;
+    }
+
+    .adv-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle at top right, var(--accent-glow, rgba(57,255,20,0.08)), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* Color variants */
+    .adv-card.green {
+      --accent-color: var(--solo-primary);
+      --accent-glow: rgba(57, 255, 20, 0.1);
+      border-color: rgba(57, 255, 20, 0.2);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.05), inset 0 1px 0 rgba(57, 255, 20, 0.1);
+    }
+
+    .adv-card.pink {
+      --accent-color: var(--solo-accent);
+      --accent-glow: rgba(255, 0, 255, 0.1);
+      border-color: rgba(255, 0, 255, 0.2);
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.05), inset 0 1px 0 rgba(255, 0, 255, 0.1);
+    }
+
+    .adv-card.white-accent {
+      --accent-color: var(--solo-text);
+      --accent-glow: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    }
+
+    /* Number / icon column */
+    .adv-number {
+      flex-shrink: 0;
+      width: 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: flex-start;
+      position: relative;
+    }
+
+    .adv-digit {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--accent-color);
+      text-shadow: 0 0 30px var(--accent-glow);
+      opacity: 0.9;
+    }
+
+    .adv-card.green .adv-digit {
+      color: var(--solo-primary);
+      text-shadow: 0 0 30px var(--solo-primary-glow);
+    }
+
+    .adv-card.pink .adv-digit {
+      color: var(--solo-accent);
+      text-shadow: 0 0 30px var(--solo-accent-glow);
+    }
+
+    .adv-card.white-accent .adv-digit {
+      color: var(--solo-text);
+      text-shadow: 0 0 20px rgba(255,255,255,0.2);
+    }
+
+    /* Icon mark next to number */
+    .adv-icon-mark {
+      width: 28px;
+      height: 28px;
+      margin-top: 12px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .adv-icon-mark::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border: 2px solid var(--accent-color);
+      transform: rotate(45deg);
+      opacity: 0.6;
+    }
+
+    .adv-icon-mark::after {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--accent-color);
+      transform: rotate(45deg);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+
+    .adv-card.green .adv-icon-mark::before { border-color: var(--solo-primary); }
+    .adv-card.green .adv-icon-mark::after { background: var(--solo-primary); box-shadow: 0 0 10px var(--solo-primary-glow); }
+    .adv-card.pink .adv-icon-mark::before { border-color: var(--solo-accent); }
+    .adv-card.pink .adv-icon-mark::after { background: var(--solo-accent); box-shadow: 0 0 10px var(--solo-accent-glow); }
+    .adv-card.white-accent .adv-icon-mark::before { border-color: var(--solo-primary); opacity: 0.8; }
+    .adv-card.white-accent .adv-icon-mark::after { background: var(--solo-primary); box-shadow: 0 0 10px var(--solo-primary-glow); }
+
+    /* Vertical separator line */
+    .adv-sep {
+      flex-shrink: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--accent-color) 20%, var(--accent-color) 80%, transparent);
+      opacity: 0.25;
+      margin: 4px 0;
+      align-self: stretch;
+    }
+
+    .adv-card.green .adv-sep { background: linear-gradient(to bottom, transparent, var(--solo-primary) 20%, var(--solo-primary) 80%, transparent); }
+    .adv-card.pink .adv-sep { background: linear-gradient(to bottom, transparent, var(--solo-accent) 20%, var(--solo-accent) 80%, transparent); }
+    .adv-card.white-accent .adv-sep { background: linear-gradient(to bottom, transparent, var(--solo-primary) 20%, var(--solo-primary) 80%, transparent); }
+
+    /* Content column */
+    .adv-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-width: 0;
+    }
+
+    .adv-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent-color);
+      margin-bottom: 14px;
+      opacity: 0.8;
+    }
+
+    .adv-tag::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      background: var(--accent-color);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    .adv-card.green .adv-tag { color: var(--solo-primary); }
+    .adv-card.green .adv-tag::before { background: var(--solo-primary); box-shadow: 0 0 8px var(--solo-primary-glow); }
+    .adv-card.pink .adv-tag { color: var(--solo-accent); }
+    .adv-card.pink .adv-tag::before { background: var(--solo-accent); box-shadow: 0 0 8px var(--solo-accent-glow); }
+    .adv-card.white-accent .adv-tag { color: var(--solo-primary); }
+    .adv-card.white-accent .adv-tag::before { background: var(--solo-primary); box-shadow: 0 0 8px var(--solo-primary-glow); }
+
+    .adv-title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--solo-text);
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+
+    .adv-card.white-accent .adv-title {
+      position: relative;
+    }
+
+    .adv-card.white-accent .adv-title::after {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      margin-left: 10px;
+      vertical-align: middle;
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+      transform: translateY(-3px);
+    }
+
+    .adv-desc {
+      font-size: 16px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+    }
+
+    /* Card index label in top right */
+    .card-index {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 2px;
+      color: var(--solo-text-dim);
+      opacity: 0.5;
+    }
+
+    /* Decorative connecting lines between grid cells - SVG layer */
+    .grid-connectors {
+      position: absolute;
+      top: 380px;
+      left: 100px;
+      right: 100px;
+      bottom: 140px;
+      z-index: 9;
+      pointer-events: none;
+    }
+
+    .grid-connectors .h-line {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(57,255,20,0.2) 20%, rgba(255,0,255,0.2) 50%, rgba(57,255,20,0.2) 80%, transparent);
+    }
+
+    .grid-connectors .v-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, rgba(57,255,20,0.2) 20%, rgba(255,0,255,0.2) 50%, rgba(57,255,20,0.2) 80%, transparent);
+    }
+
+    .grid-connectors .center-dot {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 10px;
+      background: var(--solo-text);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 3px rgba(10,10,10,1),
+        0 0 20px var(--solo-primary-glow),
+        0 0 30px var(--solo-accent-glow);
+    }
+
+    .grid-connectors .center-dot::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 4px;
+      height: 4px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    /* Bottom accent strip */
+    .bottom-accent {
+      position: absolute;
+      bottom: 100px;
+      left: 100px;
+      right: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary) 30%, var(--solo-accent) 50%, var(--solo-primary) 70%, transparent);
+      opacity: 0.3;
+      z-index: 5;
+    }
+
+    /* Decorative tech rings */
+    .tech-ring {
+      position: absolute;
+      border: 1px solid;
+      border-radius: 50%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.12;
+    }
+
+    .tech-ring.one {
+      top: -80px;
+      left: -80px;
+      width: 360px;
+      height: 360px;
+      border-color: var(--solo-primary);
+      box-shadow: 0 0 40px var(--solo-primary-glow);
+    }
+
+    .tech-ring.two {
+      bottom: -60px;
+      right: -60px;
+      width: 280px;
+      height: 280px;
+      border-color: var(--solo-accent);
+      box-shadow: 0 0 40px var(--solo-accent-glow);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes uspReveal {
+      from { opacity: 0; transform: scale(0.9); letter-spacing: 20px; }
+      to { opacity: 1; transform: scale(1); letter-spacing: -4px; }
+    }
+    @keyframes connectorDraw {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .title-group { animation: fadeInUp 0.8s ease-out forwards; }
+    .usp-word { animation: uspReveal 1s ease-out 0.2s forwards; opacity: 0; }
+    .usp-sub-label { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
+
+    .adv-card { animation: fadeInUp 0.7s ease-out forwards; opacity: 0; }
+    .adv-card:nth-child(1) { animation-delay: 0.3s; }
+    .adv-card:nth-child(2) { animation-delay: 0.45s; }
+    .adv-card:nth-child(3) { animation-delay: 0.6s; }
+    .adv-card:nth-child(4) { animation-delay: 0.75s; }
+
+    .grid-connectors { animation: connectorDraw 0.8s ease-out 0.9s forwards; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div class="slide slide-usp">
+
+    <!-- Background image with dark overlay -->
+    <div class="usp-bg">
+      <img src="../assets/images/slide-usp.jpg" alt="Ecosystem visualization">
+      <div class="usp-bg-overlay"></div>
+    </div>
+
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
+
+    <!-- Decorative rings -->
+    <div class="tech-ring one"></div>
+    <div class="tech-ring two"></div>
+
+    <!-- Corner frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Brand mini -->
+    <div class="brand-mini">SOLO</div>
+
+    <!-- Header -->
+    <div class="usp-header">
+      <div class="title-group">
+        <div class="title-bar"></div>
+        <h2 class="section-title">COMPETITIVE<br>ADVANTAGES</h2>
+      </div>
+      <div class="usp-word">USP</div>
+    </div>
+
+    <div class="usp-sub-label">
+      Unique Selling Points<span class="line"></span>
+    </div>
+
+    <!-- Grid connector lines -->
+    <div class="grid-connectors">
+      <div class="h-line"></div>
+      <div class="v-line"></div>
+      <div class="center-dot"></div>
+    </div>
+
+    <!-- Advantages 2x2 grid -->
+    <div class="advantages-grid">
+
+      <!-- Block 1: Creative Workshop (neon green) -->
+      <div class="adv-card green">
+        <div class="card-index">01 / 04</div>
+        <div class="adv-number">
+          <div class="adv-digit">01</div>
+          <div class="adv-icon-mark"></div>
+        </div>
+        <div class="adv-sep"></div>
+        <div class="adv-content">
+          <div class="adv-tag">Community</div>
+          <h3 class="adv-title">CREATIVE WORKSHOP</h3>
+          <p class="adv-desc">Open collaborative spaces where designers, creators, and sneaker enthusiasts co-create limited editions and experimental collections in real time.</p>
+        </div>
+      </div>
+
+      <!-- Block 2: Creator Incentive Program (neon pink) -->
+      <div class="adv-card pink">
+        <div class="card-index">02 / 04</div>
+        <div class="adv-number">
+          <div class="adv-digit">02</div>
+          <div class="adv-icon-mark"></div>
+        </div>
+        <div class="adv-sep"></div>
+        <div class="adv-content">
+          <div class="adv-tag">Program</div>
+          <h3 class="adv-title">CREATOR INCENTIVE PROGRAM</h3>
+          <p class="adv-desc">Reward-based ecosystem that compensates designers, influencers, and fans for original designs, content, and community engagement through revenue share.</p>
+        </div>
+      </div>
+
+      <!-- Block 3: 100% Recyclable (neon green) -->
+      <div class="adv-card green">
+        <div class="card-index">03 / 04</div>
+        <div class="adv-number">
+          <div class="adv-digit">03</div>
+          <div class="adv-icon-mark"></div>
+        </div>
+        <div class="adv-sep"></div>
+        <div class="adv-content">
+          <div class="adv-tag">Sustainability</div>
+          <h3 class="adv-title">100% RECYCLABLE</h3>
+          <p class="adv-desc">Every sneaker is engineered from fully recyclable eco-materials — from sole to laces — closing the loop and setting a new standard for responsible footwear.</p>
+        </div>
+      </div>
+
+      <!-- Block 4: Custom Designs (white with neon accent) -->
+      <div class="adv-card white-accent">
+        <div class="card-index">04 / 04</div>
+        <div class="adv-number">
+          <div class="adv-digit">04</div>
+          <div class="adv-icon-mark"></div>
+        </div>
+        <div class="adv-sep"></div>
+        <div class="adv-content">
+          <div class="adv-tag">Personalization</div>
+          <h3 class="adv-title">CUSTOM DESIGNS</h3>
+          <p class="adv-desc">A powerful online design studio lets customers customize colors, materials, and patterns — producing a truly one-of-a-kind sneaker that reflects individual identity.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Bottom accent line -->
+    <div class="bottom-accent"></div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">10</span>
+    </div>
+
+  </div>
+</body>
+</html>

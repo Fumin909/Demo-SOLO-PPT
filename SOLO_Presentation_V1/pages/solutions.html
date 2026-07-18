@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Solutions</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 05 - Solutions specific styles */
+
+    .slide-solutions {
+      background: #0A0A0A;
+    }
+
+    /* Background image positioned on the right, masked with gradient */
+    .solution-image-wrap {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 950px;
+      height: 100%;
+      z-index: 1;
+      overflow: hidden;
+      -webkit-mask-image: linear-gradient(to left, black 40%, transparent 100%);
+              mask-image: linear-gradient(to left, black 40%, transparent 100%);
+    }
+
+    .solution-image-wrap img {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Dark gradient overlay on image for text contrast */
+    .solution-image-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.1) 100%);
+      z-index: 2;
+    }
+
+    /* Title area */
+    .solutions-header {
+      position: absolute;
+      top: 110px;
+      left: 100px;
+      z-index: 10;
+    }
+
+    .solutions-header .section-title {
+      color: var(--solo-primary);
+      text-shadow: 0 0 40px var(--solo-primary-glow);
+      position: relative;
+    }
+
+    .solutions-header .title-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    /* Solutions list container */
+    .solutions-list {
+      position: absolute;
+      top: 280px;
+      left: 100px;
+      width: 780px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* Single solution block */
+    .solution-block {
+      position: relative;
+      display: flex;
+      align-items: flex-start;
+      gap: 28px;
+      padding: 28px 0 28px 0;
+    }
+
+    /* Neon icon square */
+    .solution-icon {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border: 2px solid var(--solo-primary);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(57, 255, 20, 0.05);
+      box-shadow: 0 0 20px rgba(57, 255, 20, 0.15), inset 0 0 20px rgba(57, 255, 20, 0.05);
+      margin-top: 6px;
+    }
+
+    .solution-icon.pink {
+      border-color: var(--solo-accent);
+      background: rgba(255, 0, 255, 0.05);
+      box-shadow: 0 0 20px var(--solo-accent-glow), inset 0 0 20px rgba(255, 0, 255, 0.05);
+    }
+
+    .solution-icon .icon-inner {
+      width: 16px;
+      height: 16px;
+      background: var(--solo-primary);
+      box-shadow: 0 0 12px var(--solo-primary-glow);
+      transform: rotate(45deg);
+    }
+
+    .solution-icon.pink .icon-inner {
+      background: var(--solo-accent);
+      box-shadow: 0 0 12px var(--solo-accent-glow);
+    }
+
+    /* Solution text content */
+    .solution-text {
+      flex: 1;
+    }
+
+    .solution-label {
+      display: inline-block;
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 6px 16px;
+      border-radius: var(--radius-full);
+      margin-bottom: 14px;
+    }
+
+    .solution-label.green {
+      background: var(--solo-primary);
+      color: var(--solo-bg-dark);
+    }
+
+    .solution-label.white-pink {
+      background: #FFFFFF;
+      color: var(--solo-bg-dark);
+      position: relative;
+    }
+
+    .solution-label.white-pink::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: -8px;
+      transform: translateY(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--solo-accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--solo-accent);
+    }
+
+    .solution-title {
+      font-family: var(--font-display);
+      font-size: 30px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--solo-text);
+      margin-bottom: 10px;
+      line-height: 1.2;
+    }
+
+    .solution-title .pink-accent {
+      color: var(--solo-accent);
+    }
+
+    .solution-body {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+      max-width: 640px;
+    }
+
+    /* Connecting neon line graphics between blocks */
+    .connector-line {
+      position: absolute;
+      left: 27px; /* aligned with icon center (56/2 - 2 width offset) */
+      top: 100%;
+      width: 2px;
+      height: 0;
+      background: linear-gradient(to bottom, var(--solo-primary), transparent);
+      z-index: 5;
+    }
+
+    .solution-block:not(:last-child) .connector-line {
+      height: 28px;
+    }
+
+    .solution-block.pink-block .connector-line {
+      background: linear-gradient(to bottom, var(--solo-accent), transparent);
+    }
+
+    /* Connector dot at intersection */
+    .connector-dot {
+      position: absolute;
+      left: 24px;
+      top: calc(100% + 14px);
+      width: 8px;
+      height: 8px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--solo-primary-glow);
+      z-index: 6;
+    }
+
+    .solution-block.pink-block .connector-dot {
+      background: var(--solo-accent);
+      box-shadow: 0 0 12px var(--solo-accent-glow);
+    }
+
+    /* Decorative neon vertical line on far left */
+    .vertical-accent {
+      position: absolute;
+      left: 100px;
+      top: 240px;
+      width: 2px;
+      height: 500px;
+      background: linear-gradient(to bottom, transparent, var(--solo-primary) 20%, var(--solo-accent) 50%, var(--solo-primary) 80%, transparent);
+      opacity: 0.5;
+      z-index: 2;
+      box-shadow: 0 0 15px var(--solo-primary-glow);
+    }
+
+    /* Subtle grid texture */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(var(--solo-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--solo-primary) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Futuristic corner accent */
+    .corner-mark {
+      position: absolute;
+      z-index: 10;
+    }
+    .corner-mark.tl {
+      top: 60px;
+      left: 60px;
+      width: 40px;
+      height: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      box-shadow: -3px -3px 15px var(--solo-primary-glow);
+    }
+    .corner-mark.br {
+      bottom: 60px;
+      right: 60px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      box-shadow: 3px 3px 15px var(--solo-primary-glow);
+    }
+
+    /* Brand tag */
+    .brand-mini {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Faint data/tech graphics on right side overlay */
+    .tech-graphics {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 950px;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .tech-line-h {
+      position: absolute;
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--solo-primary) 50%, transparent);
+      opacity: 0.3;
+    }
+    .tech-line-h.one { top: 200px; right: 100px; width: 400px; }
+    .tech-line-h.two { top: 800px; right: 100px; width: 300px; background: linear-gradient(to right, transparent, var(--solo-accent) 50%, transparent); }
+
+    .tech-circle {
+      position: absolute;
+      border: 1px solid var(--solo-primary);
+      border-radius: 50%;
+      opacity: 0.2;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+    .tech-circle.one { top: 150px; right: 300px; width: 200px; height: 200px; }
+    .tech-circle.two { bottom: 180px; right: 180px; width: 120px; height: 120px; border-color: var(--solo-accent); box-shadow: 0 0 20px var(--solo-accent-glow); }
+
+    /* Animations */
+    @keyframes fadeSlideRight {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes lineGrow {
+      from { height: 0; opacity: 0; }
+      to { opacity: 1; }
+    }
+    .solution-block {
+      animation: fadeSlideRight 0.7s ease-out forwards;
+      opacity: 0;
+    }
+    .solution-block:nth-child(1) { animation-delay: 0.2s; }
+    .solution-block:nth-child(2) { animation-delay: 0.4s; }
+    .solution-block:nth-child(3) { animation-delay: 0.6s; }
+    .solutions-header {
+      animation: fadeSlideRight 0.8s ease-out forwards;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide slide-solutions">
+
+    <!-- Grid overlay texture -->
+    <div class="grid-overlay"></div>
+
+    <!-- Background image on right with gradient mask -->
+    <div class="solution-image-wrap">
+      <img src="../assets/images/slide-solution.jpg" alt="Designer with holographic interface">
+      <div class="solution-image-overlay"></div>
+    </div>
+
+    <!-- Decorative tech graphics over image area -->
+    <div class="tech-graphics">
+      <div class="tech-line-h one"></div>
+      <div class="tech-line-h two"></div>
+      <div class="tech-circle one"></div>
+      <div class="tech-circle two"></div>
+    </div>
+
+    <!-- Corner marks -->
+    <div class="corner-mark tl"></div>
+    <div class="corner-mark br"></div>
+
+    <!-- Vertical accent line -->
+    <div class="vertical-accent"></div>
+
+    <!-- Brand mini on top right -->
+    <div class="brand-mini">SOLO</div>
+
+    <!-- Header / Title -->
+    <div class="solutions-header">
+      <div class="title-bar"></div>
+      <h2 class="section-title">SOLUTIONS</h2>
+    </div>
+
+    <!-- Solutions list -->
+    <div class="solutions-list">
+
+      <!-- Block 1: Custom Designs -->
+      <div class="solution-block">
+        <div class="solution-icon">
+          <div class="icon-inner"></div>
+        </div>
+        <div class="solution-text">
+          <span class="solution-label green">Custom Designs</span>
+          <h3 class="solution-title">PERSONALIZE YOUR SNEAKERS</h3>
+          <p class="solution-body">Allow customers to personalize sneakers with custom colors and materials, creating a one-of-a-kind pair that reflects individual style and identity.</p>
+        </div>
+        <div class="connector-line"></div>
+        <div class="connector-dot"></div>
+      </div>
+
+      <!-- Block 2: Asia-Inspired (pink accent) -->
+      <div class="solution-block pink-block">
+        <div class="solution-icon pink">
+          <div class="icon-inner"></div>
+        </div>
+        <div class="solution-text">
+          <span class="solution-label white-pink">Asia-Inspired</span>
+          <h3 class="solution-title">DESIGNS FROM THE <span class="pink-accent">EAST</span></h3>
+          <p class="solution-body">Create designs based on feedback from Asian markets, using local patterns and materials that celebrate cultural heritage and contemporary street fashion.</p>
+        </div>
+        <div class="connector-line"></div>
+        <div class="connector-dot"></div>
+      </div>
+
+      <!-- Block 3: Affordable & Eco-Friendly -->
+      <div class="solution-block">
+        <div class="solution-icon">
+          <div class="icon-inner"></div>
+        </div>
+        <div class="solution-text">
+          <span class="solution-label green">Eco-Friendly</span>
+          <h3 class="solution-title">AFFORDABLE & SUSTAINABLE</h3>
+          <p class="solution-body">Offer high-quality, affordable sneakers made from 100% recyclable materials — making responsible fashion accessible to everyone without compromise.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">05</span>
+    </div>
+
+  </div>
+</body>
+</html>

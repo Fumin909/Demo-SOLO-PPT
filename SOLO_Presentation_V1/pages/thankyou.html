@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Thank You</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Thank You slide */
+    .thankyou-slide .slide-bg-overlay {
+      background:
+        linear-gradient(180deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.55) 40%, rgba(0,0,0,0.85) 100%),
+        radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.6) 100%);
+    }
+
+    /* Vignette for cinematic feel */
+    .thankyou-slide::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.5) 100%);
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    /* Small SOLO logo at top center */
+    .ty-logo {
+      position: absolute;
+      top: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 8px;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      text-transform: uppercase;
+    }
+
+    .ty-logo::before,
+    .ty-logo::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary));
+    }
+
+    .ty-logo::before {
+      right: 100%;
+      margin-right: 20px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary));
+    }
+
+    .ty-logo::after {
+      left: 100%;
+      margin-left: 20px;
+      background: linear-gradient(90deg, var(--solo-primary), transparent);
+    }
+
+    /* Center content */
+    .ty-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      z-index: 5;
+      text-align: center;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .ty-title {
+      font-family: var(--font-display);
+      font-size: 130px;
+      font-weight: 900;
+      letter-spacing: 12px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      line-height: 1;
+      text-shadow:
+        0 0 30px rgba(57, 255, 20, 0.3),
+        0 0 60px rgba(57, 255, 20, 0.15);
+      position: relative;
+    }
+
+    .ty-title .accent-you {
+      color: var(--solo-primary);
+      text-shadow:
+        0 0 40px var(--solo-primary-glow),
+        0 0 80px rgba(57, 255, 20, 0.4);
+    }
+
+    /* Title divider */
+    .ty-divider {
+      width: 160px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary), transparent);
+      margin-top: 40px;
+      box-shadow: 0 0 16px var(--solo-primary-glow);
+    }
+
+    /* Glassmorphism contact card */
+    .contact-card {
+      margin-top: 50px;
+      padding: 44px 72px;
+      background: rgba(20, 20, 20, 0.45);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(57, 255, 20, 0.2);
+      border-radius: var(--radius-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 22px;
+      box-shadow:
+        0 8px 40px rgba(0, 0, 0, 0.5),
+        0 0 60px rgba(57, 255, 20, 0.05),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      min-width: 560px;
+    }
+
+    .contact-label {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      color: var(--solo-primary);
+      text-shadow: 0 0 10px var(--solo-primary-glow);
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+      width: 100%;
+      text-align: center;
+    }
+
+    .contact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 22px;
+      color: var(--solo-text);
+      font-family: var(--font-body);
+      letter-spacing: 1px;
+    }
+
+    .contact-item .icon {
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--solo-primary);
+      flex-shrink: 0;
+    }
+
+    .contact-item .icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: var(--solo-primary);
+      fill: none;
+      stroke-width: 1.5;
+      filter: drop-shadow(0 0 6px var(--solo-primary-glow));
+    }
+
+    .contact-item .value {
+      font-weight: 500;
+    }
+
+    /* Bottom tagline callback */
+    .ty-tagline {
+      position: absolute;
+      bottom: 110px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 10px;
+      text-transform: uppercase;
+      color: var(--solo-text);
+      opacity: 0.7;
+    }
+
+    .ty-tagline .highlight {
+      color: var(--solo-primary);
+      text-shadow: 0 0 14px var(--solo-primary-glow);
+    }
+
+    /* Neon line below tagline */
+    .ty-tagline::after {
+      content: "";
+      display: block;
+      width: 80px;
+      height: 2px;
+      background: var(--solo-primary);
+      margin: 16px auto 0;
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+    }
+
+    /* Subtle scanlines overlay */
+    .scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255,255,255,0.08) 2px,
+        rgba(255,255,255,0.08) 4px
+      );
+    }
+
+    /* Corner accents */
+    .corner-accent {
+      border-color: rgba(57, 255, 20, 0.3);
+      z-index: 10;
+    }
+
+    /* Animation delays */
+    .anim-delay-1 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-2 { animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-3 { animation-delay: 0.8s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-4 { animation-delay: 1.1s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-5 { animation-delay: 1.4s; opacity: 0; animation-fill-mode: forwards; }
+  </style>
+</head>
+<body>
+  <section class="slide thankyou-slide">
+    <!-- Background Image with overlay -->
+    <div class="slide-bg">
+      <img src="../assets/images/slide-thankyou.jpg" alt="SOLO Thank You">
+      <div class="slide-bg-overlay"></div>
+    </div>
+
+    <!-- Subtle grid -->
+    <div class="grid-lines" style="opacity: 0.025;"></div>
+
+    <!-- Scanlines -->
+    <div class="scanlines"></div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent bottom-right"></div>
+
+    <!-- Small SOLO logo at top -->
+    <div class="ty-logo animate-fade anim-delay-1">SOLO</div>
+
+    <!-- Center content -->
+    <div class="ty-center">
+      <h1 class="ty-title animate-slide-up anim-delay-2">
+        THANK <span class="accent-you animate-pulse-neon">YOU</span>
+      </h1>
+      <div class="ty-divider animate-fade anim-delay-3"></div>
+
+      <!-- Contact card -->
+      <div class="contact-card animate-slide-up anim-delay-4">
+        <div class="contact-label">Find Us At</div>
+        <div class="contact-list">
+          <!-- Website -->
+          <div class="contact-item">
+            <span class="icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="2" y1="12" x2="22" y2="12"/>
+                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+              </svg>
+            </span>
+            <span class="value">www.solo.com</span>
+          </div>
+          <!-- Phone -->
+          <div class="contact-item">
+            <span class="icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+            </span>
+            <span class="value">123-456-789</span>
+          </div>
+          <!-- Email -->
+          <div class="contact-item">
+            <span class="icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </span>
+            <span class="value">solo@gmail.com</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom tagline callback -->
+    <div class="ty-tagline animate-fade anim-delay-5">
+      RUN FOR <span class="highlight">EXTRAORDINARY</span>.
+    </div>
+
+    <!-- Page Number -->
+    <div class="page-number animate-fade anim-delay-5">
+      <span class="current">16</span>
+    </div>
+  </section>
+</body>
+</html>

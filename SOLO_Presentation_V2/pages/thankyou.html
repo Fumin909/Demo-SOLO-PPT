@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  body { background:#000; }
+  .slide { background:#000; position:relative; }
+  .corner-logo { position:absolute; top:30px; left:50px; z-index:20; }
+  .corner-logo .solo-logo { position:static; font-size:56px; }
+  .ty-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-55%); text-align:center; }
+  .ty-line {
+    font-family:'Anton',sans-serif;
+    font-size:150px;
+    color:var(--hot-pink);
+    letter-spacing:8px;
+    text-transform:uppercase;
+    line-height:1.1;
+    margin-bottom:10px;
+  }
+  .ty-line.glow {
+    text-shadow: 0 0 15px var(--hot-pink-glow), 0 0 40px var(--hot-pink), 0 0 80px rgba(255,105,180,0.5);
+    color:var(--hot-pink-glow);
+  }
+  .ty-line.outline {
+    -webkit-text-stroke: 3px var(--hot-pink);
+    color: transparent;
+    text-shadow: none;
+  }
+  .footer-bar { position:absolute; bottom:0; left:0; right:0; height:140px; background:var(--hot-pink-glow); display:flex; align-items:center; padding:0 80px; gap:80px; }
+  .footer-bar .label { font-family:'Anton',sans-serif; font-size:38px; color:#000; letter-spacing:2px; }
+  .footer-bar .info { font-family:'Inter',sans-serif; font-size:30px; color:#000; font-weight:800; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="corner-logo">
+    <div class="solo-logo"><span class="s-letter">S</span><span class="o1-letter">O</span><span class="l-letter">L</span><span class="o2-letter">O</span></div>
+  </div>
+
+  <div class="ty-center">
+    <div class="ty-line glow">THANK YOU</div>
+    <div class="ty-line outline">THANK YOU</div>
+    <div class="ty-line glow">THANK YOU</div>
+  </div>
+
+  <div class="footer-bar">
+    <div>
+      <div class="label">Find us at</div>
+    </div>
+    <div class="info">www.solo.com</div>
+    <div class="info">123-456-789</div>
+    <div class="info">solo@gmail.com</div>
+  </div>
+</div>
+</body>
+</html>

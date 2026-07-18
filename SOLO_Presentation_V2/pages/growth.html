@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .bg { position:absolute; inset:0; z-index:0; }
+  .bg img { width:100%; height:100%; object-fit:cover; filter:brightness(0.45) saturate(0.8); }
+  .bg-overlay { position:absolute; inset:0; background: linear-gradient(180deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.6) 100%); z-index:1; }
+  h1.g-title { position:absolute; top:50px; left:80px; font-family:'Anton',sans-serif; font-size:90px; color:var(--neon-green); text-shadow:0 0 20px var(--neon-green), 0 0 50px rgba(57,255,20,0.5); letter-spacing:4px; text-transform:uppercase; z-index:10; line-height:1; }
+  /* Timeline */
+  .timeline { position:absolute; top:250px; left:100px; right:100px; z-index:8; }
+  .tl-line { position:absolute; top:70px; left:0; right:0; height:4px; background:#fff; z-index:1; }
+  .tl-arrow { position:absolute; top:62px; right:-20px; width:0; height:0; border-top:12px solid transparent; border-bottom:12px solid transparent; border-left:24px solid #fff; }
+  .stages { display:flex; justify-content:space-between; position:relative; z-index:5; }
+  .stage { width:22%; text-align:center; position:relative; }
+  .stage-target { background:var(--neon-green); color:#000; font-family:'Anton',sans-serif; font-size:28px; padding:10px 14px; border-radius:24px; margin-bottom:30px; letter-spacing:1px; line-height:1.2; display:inline-block; }
+  .stage-pill { background:#fff; color:#000; font-family:'Anton',sans-serif; font-size:38px; padding:14px 30px; border-radius:50px; letter-spacing:2px; display:inline-block; box-shadow:0 6px 20px rgba(0,0,0,0.3); }
+  /* Charts area */
+  .charts-row { position:absolute; bottom:60px; left:80px; right:80px; display:grid; grid-template-columns: 1fr 1fr; gap:40px; z-index:8; }
+  .chart-card { padding:20px 0; }
+  .chart-left { position:relative; padding-left:140px; }
+  .chart-left .y-axis { position:absolute; left:0; top:0; bottom:40px; width:130px; }
+  .rev-label { font-family:'Anton',sans-serif; font-size:34px; color:var(--neon-green); letter-spacing:2px; text-transform:uppercase; margin-bottom:14px; text-shadow:0 0 10px rgba(57,255,20,0.5); }
+  .rev-line { position:relative; height:260px; }
+  .rev-line svg { width:100%; height:100%; }
+  .rev-tag { position:absolute; background:var(--neon-green); color:#000; font-family:'Anton',sans-serif; font-size:28px; padding:6px 16px; border-radius:20px; white-space:nowrap; }
+  .yrs { display:flex; justify-content:space-between; margin-top:8px; font-family:'Anton',sans-serif; color:#fff; font-size:22px; letter-spacing:1px; }
+  /* Bar chart */
+  .bar-chart { position:relative; }
+  .bars { display:flex; align-items:flex-end; gap:18px; height:240px; padding:0 10px; border-left:3px solid rgba(255,255,255,0.4); border-bottom:3px solid rgba(255,255,255,0.4); }
+  .bar-group { flex:1; display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .bar { width:100%; border-radius:6px 6px 0 0; }
+  .bar.store { background:#5CE0E6; }
+  .bar.cust { background:#30B0D0; }
+  .bar-label { font-family:'Anton',sans-serif; color:#fff; font-size:20px; margin-top:8px; letter-spacing:1px; }
+  .bar-val { position:absolute; background:var(--neon-green); color:#000; font-family:'Anton',sans-serif; font-size:22px; padding:4px 12px; border-radius:16px; white-space:nowrap; }
+  .legend { display:flex; gap:24px; justify-content:center; margin-top:16px; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; color:#fff; font-size:20px; font-weight:700; }
+  .legend-swatch { width:24px; height:24px; border-radius:4px; }
+  .corner-logo { position:absolute; top:30px; right:40px; z-index:20; }
+  .corner-logo .solo-logo { position:static; font-size:56px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="bg"><img src="../assets/marathon_bg.jpg" alt=""></div>
+  <div class="bg-overlay"></div>
+
+  <h1 class="g-title">PRODUCT SALES GOAL</h1>
+
+  <div class="timeline">
+    <div class="tl-line"></div>
+    <div class="tl-arrow"></div>
+    <div class="stages">
+      <div class="stage">
+        <div class="stage-target">100,000 pairs of<br>shoes</div>
+        <div class="stage-pill">Stage 1</div>
+      </div>
+      <div class="stage">
+        <div class="stage-target">300,000 pairs of<br>shoes</div>
+        <div class="stage-pill">Stage 2</div>
+      </div>
+      <div class="stage">
+        <div class="stage-target">600,000 pairs of<br>shoes</div>
+        <div class="stage-pill">Stage 3</div>
+      </div>
+      <div class="stage">
+        <div class="stage-target">1,000,000 pairs of<br>shoes</div>
+        <div class="stage-pill">Stage 4</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="charts-row">
+    <div class="chart-card chart-left">
+      <div class="rev-label">Revenue growth</div>
+      <div class="rev-line">
+        <svg viewBox="0 0 500 250" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#5CE0E6" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#5CE0E6" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <!-- Area fill -->
+          <path d="M 30,220 Q 130,190 230,130 Q 330,70 470,10 L 470,250 L 30,250 Z" fill="url(#revGrad)"/>
+          <!-- Line -->
+          <path d="M 30,220 Q 130,190 230,130 Q 330,70 470,10" stroke="#5CE0E6" stroke-width="4" fill="none" stroke-linecap="round"/>
+          <!-- Dots -->
+          <circle cx="30" cy="220" r="6" fill="#5CE0E6"/>
+          <circle cx="150" cy="175" r="6" fill="#5CE0E6"/>
+          <circle cx="270" cy="110" r="6" fill="#5CE0E6"/>
+          <circle cx="470" cy="10" r="6" fill="#5CE0E6"/>
+        </svg>
+        <div class="rev-tag" style="left:0;top:200px;">8 million</div>
+        <div class="rev-tag" style="left:120px;top:140px;">18 million</div>
+        <div class="rev-tag" style="left:240px;top:60px;">40 million</div>
+        <div class="rev-tag" style="left:370px;top:-20px;">90 million</div>
+      </div>
+      <div class="yrs">
+        <span>2025</span><span>2026</span><span>2027</span><span>2028</span>
+      </div>
+    </div>
+
+    <div class="chart-card bar-chart">
+      <div class="bars">
+        <div class="bar-group">
+          <div class="val-tag" style="top:-40px;left:10px;"></div>
+          <div class="bar store" style="height:30px;"></div>
+          <div class="bar cust" style="height:0px;display:none;"></div>
+          <div class="bar-label">2025</div>
+          <div class="bar-val" style="top:180px;left:-10px;font-size:18px;">5 stores</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar store" style="height:50px;"></div>
+          <div class="bar cust" style="height:90px;"></div>
+          <div class="bar-label">2026</div>
+          <div class="bar-val" style="top:130px;left:80px;font-size:18px;">50,000 customers</div>
+          <div class="bar-val" style="top:170px;left:90px;font-size:16px;">15 stores</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar store" style="height:70px;"></div>
+          <div class="bar cust" style="height:170px;"></div>
+          <div class="bar-label">2027</div>
+          <div class="bar-val" style="top:40px;left:200px;">150,000 customers</div>
+          <div class="bar-val" style="top:140px;left:210px;font-size:18px;">30 stores</div>
+        </div>
+        <div class="bar-group">
+          <div class="bar store" style="height:100px;"></div>
+          <div class="bar cust" style="height:240px;"></div>
+          <div class="bar-label">2028</div>
+          <div class="bar-val" style="top:-20px;left:320px;">800,000 customers</div>
+          <div class="bar-val" style="top:100px;left:340px;">80 stores</div>
+          <div class="bar-val" style="top:130px;left:320px;font-size:20px;">300,000 customers</div>
+        </div>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><div class="legend-swatch" style="background:#5CE0E6;"></div>No. of stores/city</div>
+        <div class="legend-item"><div class="legend-swatch" style="background:#30B0D0;"></div>No. of customers/thousand</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="corner-logo">
+    <div class="solo-logo"><span class="s-letter">S</span><span class="o1-letter">O</span><span class="l-letter">L</span><span class="o2-letter">O</span></div>
+  </div>
+</div>
+</body>
+</html>

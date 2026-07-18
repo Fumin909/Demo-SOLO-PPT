@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Logo</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Logo slide - pure black with subtle green radial glow */
+    .logo-slide {
+      background: #000000;
+    }
+
+    .logo-slide .radial-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 1200px;
+      height: 1200px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(ellipse at center, rgba(57, 255, 20, 0.08) 0%, rgba(57, 255, 20, 0.03) 30%, transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Center content */
+    .logo-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -55%);
+      z-index: 5;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .logo-mark {
+      font-family: 'Arial Black', 'Helvetica Neue', 'Impact', sans-serif;
+      font-size: 310px;
+      font-weight: 900;
+      line-height: 0.9;
+      letter-spacing: -8px;
+      color: var(--solo-primary);
+      text-transform: uppercase;
+      -webkit-text-stroke: 2px rgba(57, 255, 20, 0.6);
+      text-shadow:
+        0 0 30px rgba(57, 255, 20, 0.8),
+        0 0 60px rgba(57, 255, 20, 0.5),
+        0 0 100px rgba(57, 255, 20, 0.3),
+        0 0 150px rgba(57, 255, 20, 0.15);
+      animation: logoPulse 3s ease-in-out infinite;
+      position: relative;
+    }
+
+    @keyframes logoPulse {
+      0%, 100% {
+        text-shadow:
+          0 0 30px rgba(57, 255, 20, 0.8),
+          0 0 60px rgba(57, 255, 20, 0.5),
+          0 0 100px rgba(57, 255, 20, 0.3),
+          0 0 150px rgba(57, 255, 20, 0.15);
+      }
+      50% {
+        text-shadow:
+          0 0 40px rgba(57, 255, 20, 1),
+          0 0 80px rgba(57, 255, 20, 0.7),
+          0 0 140px rgba(57, 255, 20, 0.45),
+          0 0 200px rgba(57, 255, 20, 0.2);
+      }
+    }
+
+    /* Tagline below logo */
+    .logo-tagline {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 14px;
+      text-transform: uppercase;
+      color: #FFFFFF;
+      margin-top: 40px;
+      opacity: 0.85;
+    }
+
+    /* Decorative line above tagline */
+    .logo-divider {
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary), transparent);
+      margin-top: 36px;
+      box-shadow: 0 0 12px var(--solo-primary-glow);
+    }
+
+    /* Sneaker silhouette SVG icon */
+    .sneaker-icon {
+      position: absolute;
+      bottom: 180px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 5;
+      opacity: 0.4;
+    }
+
+    .sneaker-icon svg {
+      width: 120px;
+      height: auto;
+      filter: drop-shadow(0 0 8px var(--solo-primary-glow));
+    }
+
+    .sneaker-icon svg path,
+    .sneaker-icon svg line {
+      stroke: var(--solo-primary);
+    }
+
+    /* Horizontal accent lines flanking the logo */
+    .accent-line {
+      position: absolute;
+      top: 50%;
+      width: 200px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.3), transparent);
+      z-index: 4;
+    }
+
+    .accent-line.left {
+      left: calc(50% - 520px);
+      transform: translateY(-50%);
+    }
+
+    .accent-line.right {
+      right: calc(50% - 520px);
+      transform: translateY(-50%);
+    }
+
+    /* Corner dots */
+    .corner-dot {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      z-index: 5;
+      box-shadow: 0 0 10px var(--solo-primary);
+    }
+
+    .corner-dot.tl { top: 40px; left: 40px; }
+    .corner-dot.tr { top: 40px; right: 40px; }
+    .corner-dot.bl { bottom: 40px; left: 40px; }
+    .corner-dot.br { bottom: 40px; right: 40px; }
+
+    /* Small tech details - data readout lines */
+    .tech-readout {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--solo-primary);
+      opacity: 0.35;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      z-index: 5;
+    }
+
+    .tech-readout.top-left {
+      top: 60px;
+      left: 60px;
+    }
+
+    .tech-readout.top-right {
+      top: 60px;
+      right: 60px;
+      text-align: right;
+    }
+
+    .tech-readout.bottom-left {
+      bottom: 60px;
+      left: 60px;
+    }
+
+    /* Animation delays */
+    .anim-delay-1 { animation-delay: 0.2s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-2 { animation-delay: 0.5s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-3 { animation-delay: 0.9s; opacity: 0; animation-fill-mode: forwards; }
+    .anim-delay-4 { animation-delay: 1.2s; opacity: 0; animation-fill-mode: forwards; }
+
+    /* Fade in keyframes already in style.css; adding for line reveal */
+    @keyframes lineExtend {
+      from { width: 0; opacity: 0; }
+      to { width: 200px; opacity: 1; }
+    }
+
+    .accent-line.left.anim-line {
+      animation: lineExtend 1s ease-out 0.7s forwards;
+      width: 0;
+      opacity: 0;
+    }
+
+    .accent-line.right.anim-line {
+      animation: lineExtend 1s ease-out 0.7s forwards;
+      width: 0;
+      opacity: 0;
+    }
+  </style>
+</head>
+<body>
+  <section class="slide logo-slide">
+    <!-- Pure black background with radial glow -->
+    <div class="radial-glow"></div>
+
+    <!-- Subtle grid overlay (very faint) -->
+    <div class="grid-lines" style="opacity: 0.025;"></div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left" style="border-color: rgba(57, 255, 20, 0.25);"></div>
+    <div class="corner-accent bottom-right" style="border-color: rgba(57, 255, 20, 0.25);"></div>
+
+    <!-- Corner dots -->
+    <div class="corner-dot tl animate-fade anim-delay-1"></div>
+    <div class="corner-dot tr animate-fade anim-delay-1"></div>
+    <div class="corner-dot bl animate-fade anim-delay-1"></div>
+    <div class="corner-dot br animate-fade anim-delay-1"></div>
+
+    <!-- Tech readouts -->
+    <div class="tech-readout top-left animate-fade anim-delay-1">SYS.BRAND // SOLO_CORP</div>
+    <div class="tech-readout top-right animate-fade anim-delay-1">N//EO_SYS_v3.0</div>
+    <div class="tech-readout bottom-left animate-fade anim-delay-4">BACK TO THE FUTURE</div>
+
+    <!-- Flanking accent lines -->
+    <div class="accent-line left anim-line"></div>
+    <div class="accent-line right anim-line"></div>
+
+    <!-- Center Logo Mark -->
+    <div class="logo-center">
+      <h1 class="logo-mark animate-fade anim-delay-2">SOLO</h1>
+      <div class="logo-divider animate-fade anim-delay-3"></div>
+      <div class="logo-tagline animate-slide-up anim-delay-4">Back to the Future Sneakers</div>
+    </div>
+
+    <!-- Sneaker silhouette icon (decorative) -->
+    <div class="sneaker-icon animate-fade anim-delay-4">
+      <svg viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sneaker side silhouette -->
+        <path d="M10 45 L10 38 Q10 30 20 28 L35 26 L50 18 Q60 12 75 14 L95 18 Q115 20 135 28 L165 38 Q185 42 190 45 L190 50 Q190 52 188 52 L12 52 Q10 52 10 50 Z"
+              stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+        <!-- Sole line -->
+        <path d="M12 48 L188 48" stroke-width="1" fill="none"/>
+        <!-- Laces -->
+        <line x1="55" y1="25" x2="68" y2="32" stroke-width="1"/>
+        <line x1="70" y1="22" x2="82" y2="30" stroke-width="1"/>
+        <line x1="84" y1="20" x2="95" y2="28" stroke-width="1"/>
+        <line x1="98" y1="20" x2="108" y2="27" stroke-width="1"/>
+        <!-- Swoosh-like accent -->
+        <path d="M70 42 Q110 32 155 40" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+    </div>
+
+    <!-- Page Number -->
+    <div class="page-number animate-fade anim-delay-4">
+      <span class="current">15</span>
+    </div>
+  </section>
+</body>
+</html>

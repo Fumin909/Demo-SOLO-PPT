@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Problems</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Problems slide specific styles */
+    .problems-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.5) 40%, rgba(10,10,10,0.7) 100%);
+      z-index: 1;
+    }
+
+    .problems-title {
+      position: absolute;
+      top: 90px;
+      left: 100px;
+      z-index: 5;
+    }
+
+    .problems-title .section-title {
+      color: var(--solo-text);
+      position: relative;
+      display: inline-block;
+    }
+
+    .problems-title .section-title .neon {
+      color: var(--solo-primary);
+      text-shadow: 0 0 40px var(--solo-primary-glow);
+    }
+
+    .problems-title .title-accent {
+      position: absolute;
+      bottom: -16px;
+      left: 0;
+      width: 100px;
+      height: 4px;
+      background: var(--solo-primary);
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .problems-title .title-tag {
+      margin-top: 36px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Floating problem cards */
+    .problem-card {
+      position: absolute;
+      width: 440px;
+      background: rgba(20, 20, 20, 0.85);
+      border: 1px solid rgba(57, 255, 20, 0.2);
+      border-top: 3px solid var(--solo-primary);
+      border-radius: var(--radius-lg);
+      padding: 32px 36px;
+      backdrop-filter: blur(16px);
+      z-index: 5;
+      transition: all 0.3s ease;
+    }
+
+    .problem-card:hover {
+      border-color: var(--solo-primary);
+      box-shadow: 0 0 40px var(--solo-primary-glow);
+      transform: translateY(-4px);
+    }
+
+    .problem-card .card-number {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--solo-primary);
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .problem-card .card-number::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 2px;
+      background: var(--solo-primary);
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+    }
+
+    .problem-card .card-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 800;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--solo-text);
+      margin-bottom: 16px;
+    }
+
+    .problem-card .card-body {
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+    }
+
+    .problem-card .card-corner {
+      position: absolute;
+      top: -1px;
+      right: -1px;
+      width: 20px;
+      height: 20px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Card positions */
+    .problem-card.card-1 {
+      top: 240px;
+      right: 100px;
+      animation: floatCard 6s ease-in-out infinite;
+    }
+
+    .problem-card.card-2 {
+      top: 440px;
+      left: 100px;
+      width: 420px;
+      animation: floatCard 6s ease-in-out infinite;
+      animation-delay: -2s;
+    }
+
+    .problem-card.card-3 {
+      bottom: 160px;
+      right: 140px;
+      width: 460px;
+      animation: floatCard 6s ease-in-out infinite;
+      animation-delay: -4s;
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    .problem-card.card-1:hover,
+    .problem-card.card-2:hover,
+    .problem-card.card-3:hover {
+      animation-play-state: paused;
+    }
+
+    /* Connector lines (subtle neon) */
+    .connector-line {
+      position: absolute;
+      z-index: 4;
+      pointer-events: none;
+      opacity: 0.15;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <!-- Background Image -->
+    <div class="slide-bg">
+      <img src="../assets/images/slide-problem.jpg" alt="Problem Background">
+      <div class="problems-overlay"></div>
+    </div>
+
+    <!-- Grid Lines -->
+    <div class="grid-lines"></div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent bottom-right"></div>
+
+    <!-- Title -->
+    <div class="problems-title">
+      <h2 class="section-title">
+        PROB<span class="neon">LEMS</span>
+        <span class="title-accent"></span>
+      </h2>
+      <div class="title-tag">// Market Pain Points</div>
+    </div>
+
+    <!-- Problem Card 1: Top-Right - Lack of Personalized Choices -->
+    <div class="problem-card card-1">
+      <div class="card-corner"></div>
+      <div class="card-number">01</div>
+      <h3 class="card-title">Lack of Personalized Choices</h3>
+      <p class="card-body">The market lacks products that offer highly personalized sneaker designs.</p>
+    </div>
+
+    <!-- Problem Card 2: Middle-Left - Lack of Asian Design Elements -->
+    <div class="problem-card card-2">
+      <div class="card-corner"></div>
+      <div class="card-number">02</div>
+      <h3 class="card-title">Lack of Asian Design Elements</h3>
+      <p class="card-body">Users are eager for more local brands that reflect Asian culture.</p>
+    </div>
+
+    <!-- Problem Card 3: Bottom-Right - High Quality yet Affordable -->
+    <div class="problem-card card-3">
+      <div class="card-corner"></div>
+      <div class="card-number">03</div>
+      <h3 class="card-title">Lack of High-Quality yet Affordable Products</h3>
+      <p class="card-body">The market lacks sneakers that are both high-quality and reasonably priced.</p>
+    </div>
+
+    <!-- Page Number -->
+    <div class="page-number">
+      <span class="current">04</span>
+    </div>
+  </div>
+</body>
+</html>

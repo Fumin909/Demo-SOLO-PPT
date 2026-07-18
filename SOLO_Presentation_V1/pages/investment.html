@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Investment</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 13 - Investment specific styles */
+
+    .slide-investment {
+      background: #0A0A0A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Full-screen background image */
+    .investment-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .investment-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .investment-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse at 25% 50%, rgba(57, 255, 20, 0.06) 0%, transparent 45%),
+        radial-gradient(ellipse at 75% 30%, rgba(255, 0, 255, 0.05) 0%, transparent 40%),
+        linear-gradient(135deg, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.82) 50%, rgba(10,10,10,0.94) 100%);
+    }
+
+    /* Grid overlay - digital dashboard feel */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.05;
+      background-image:
+        linear-gradient(var(--solo-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--solo-primary) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    /* Fine scanline effect */
+    .scanlines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      opacity: 0.03;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(57, 255, 20, 0.5) 2px,
+        rgba(57, 255, 20, 0.5) 3px
+      );
+      pointer-events: none;
+    }
+
+    /* Corner frames */
+    .corner-frame {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+    }
+    .corner-frame.tl {
+      top: 40px;
+      left: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.tr {
+      top: 40px;
+      right: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Brand mini */
+    .brand-mini {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Header */
+    .investment-header {
+      position: absolute;
+      top: 90px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+    }
+
+    .title-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .investment-header .section-title {
+      color: var(--solo-text);
+      font-size: 64px;
+      letter-spacing: 2px;
+    }
+
+    /* Funding target hero section */
+    .funding-hero {
+      position: absolute;
+      top: 200px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+      display: flex;
+      align-items: baseline;
+      gap: 32px;
+    }
+
+    .funding-label {
+      font-family: var(--font-mono);
+      font-size: 16px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      padding-top: 24px;
+    }
+
+    .funding-amount {
+      font-family: var(--font-display);
+      font-size: 120px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      color: var(--solo-primary);
+      text-shadow:
+        0 0 40px var(--solo-primary-glow),
+        0 0 80px rgba(57, 255, 20, 0.25),
+        0 0 120px rgba(57, 255, 20, 0.1);
+      position: relative;
+    }
+
+    .funding-amount::before {
+      content: '$4 MILLION';
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(57, 255, 20, 0.25);
+      transform: translate(4px, 4px);
+      z-index: -1;
+      text-shadow: none;
+    }
+
+    .funding-currency {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 800;
+      color: var(--solo-primary);
+      text-shadow: 0 0 30px var(--solo-primary-glow);
+      vertical-align: super;
+      margin-right: 8px;
+    }
+
+    /* Dashboard label strip */
+    .dashboard-strip {
+      position: absolute;
+      top: 370px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .strip-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--solo-primary) 0%, rgba(57,255,20,0.3) 50%, transparent 100%);
+      opacity: 0.4;
+    }
+
+    .strip-line.right {
+      background: linear-gradient(90deg, transparent 0%, rgba(255,0,255,0.3) 50%, var(--solo-accent) 100%);
+    }
+
+    .strip-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-primary);
+      opacity: 0.8;
+      white-space: nowrap;
+    }
+
+    /* Main content area - chart + legend */
+    .allocation-container {
+      position: absolute;
+      top: 420px;
+      left: 100px;
+      right: 100px;
+      bottom: 140px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      gap: 80px;
+    }
+
+    /* Donut chart */
+    .chart-wrapper {
+      flex-shrink: 0;
+      position: relative;
+      width: 480px;
+      height: 480px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Outer tech ring */
+    .chart-outer-ring {
+      position: absolute;
+      top: -20px;
+      left: -20px;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      border: 1px dashed rgba(57, 255, 20, 0.2);
+      animation: spin 60s linear infinite;
+    }
+
+    .chart-inner-ring {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 440px;
+      height: 440px;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .donut-chart {
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      position: relative;
+      background: conic-gradient(
+        var(--solo-primary) 0deg 144deg,
+        var(--solo-primary-bright) 144deg 216deg,
+        var(--solo-accent) 216deg 288deg,
+        rgba(255, 255, 255, 0.6) 288deg 342deg,
+        var(--solo-primary-dark) 342deg 360deg
+      );
+      box-shadow:
+        0 0 60px rgba(57, 255, 20, 0.15),
+        0 0 120px rgba(57, 255, 20, 0.08),
+        inset 0 0 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .donut-chart::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: #0A0A0A;
+      box-shadow:
+        inset 0 0 30px rgba(0, 0, 0, 0.8),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
+    /* Center content inside donut */
+    .donut-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      width: 200px;
+    }
+
+    .donut-center-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      margin-bottom: 8px;
+    }
+
+    .donut-center-value {
+      font-family: var(--font-display);
+      font-size: 48px;
+      font-weight: 900;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .donut-center-sub {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--solo-text-muted);
+    }
+
+    /* Tick marks around chart */
+    .chart-ticks {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .chart-tick {
+      position: absolute;
+      width: 2px;
+      height: 8px;
+      background: var(--solo-primary);
+      opacity: 0.4;
+      left: 50%;
+      transform-origin: center 250px;
+    }
+
+    /* Legend panel */
+    .legend-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .legend-title {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .legend-title::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .legend-item:last-child {
+      border-bottom: none;
+    }
+
+    .legend-item::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0;
+      background: linear-gradient(90deg, var(--item-color, var(--solo-primary)), transparent);
+      opacity: 0.15;
+      transition: width 0.3s ease;
+    }
+
+    .legend-item:hover::before {
+      width: 100%;
+    }
+
+    .legend-dot {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      position: relative;
+      box-shadow: 0 0 12px var(--item-glow, var(--solo-primary-glow));
+    }
+
+    .legend-dot::after {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: 5px;
+      border: 1px solid var(--item-color, var(--solo-primary));
+      opacity: 0.3;
+    }
+
+    .legend-item.production {
+      --item-color: var(--solo-primary);
+      --item-glow: var(--solo-primary-glow);
+    }
+    .legend-item.production .legend-dot { background: var(--solo-primary); }
+
+    .legend-item.rd {
+      --item-color: var(--solo-primary-bright);
+      --item-glow: rgba(0, 255, 106, 0.4);
+    }
+    .legend-item.rd .legend-dot { background: var(--solo-primary-bright); }
+
+    .legend-item.marketing {
+      --item-color: var(--solo-accent);
+      --item-glow: var(--solo-accent-glow);
+    }
+    .legend-item.marketing .legend-dot { background: var(--solo-accent); }
+
+    .legend-item.platform {
+      --item-color: rgba(255, 255, 255, 0.7);
+      --item-glow: rgba(255, 255, 255, 0.2);
+    }
+    .legend-item.platform .legend-dot { background: rgba(255, 255, 255, 0.6); }
+
+    .legend-item.contingency {
+      --item-color: var(--solo-primary-dark);
+      --item-glow: rgba(31, 160, 13, 0.4);
+    }
+    .legend-item.contingency .legend-dot { background: var(--solo-primary-dark); }
+
+    .legend-info {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .legend-name {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--solo-text);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .legend-desc {
+      font-size: 13px;
+      color: var(--solo-text-dim);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+    }
+
+    .legend-value {
+      flex-shrink: 0;
+      text-align: right;
+    }
+
+    .legend-pct {
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--item-color, var(--solo-primary));
+      text-shadow: 0 0 20px var(--item-glow, var(--solo-primary-glow));
+      line-height: 1;
+    }
+
+    .legend-amount {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--solo-text-muted);
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Data callout boxes - small metric tiles */
+    .metric-tiles {
+      position: absolute;
+      top: 430px;
+      right: 100px;
+      z-index: 10;
+      display: none;
+    }
+
+    /* Decorative tech elements */
+    .tech-accent {
+      position: absolute;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .tech-box {
+      border: 1px solid rgba(57, 255, 20, 0.15);
+      opacity: 0.4;
+    }
+
+    .tech-box.one {
+      top: 180px;
+      left: 80px;
+      width: 120px;
+      height: 80px;
+      border-color: rgba(57, 255, 20, 0.1);
+    }
+
+    .tech-box.two {
+      bottom: 160px;
+      right: 80px;
+      width: 100px;
+      height: 60px;
+      border-color: rgba(255, 0, 255, 0.12);
+    }
+
+    /* Bottom status bar */
+    .status-bar {
+      position: absolute;
+      bottom: 100px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+    }
+
+    .status-left, .status-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    .status-line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--solo-primary), transparent);
+      opacity: 0.4;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes chartReveal {
+      from { opacity: 0; transform: scale(0.7) rotate(-30deg); }
+      to { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    @keyframes amountReveal {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); letter-spacing: 20px; }
+      to { opacity: 1; transform: translateY(0) scale(1); letter-spacing: -2px; }
+    }
+    @keyframes drawLine {
+      from { width: 0; }
+    }
+
+    .investment-header { animation: fadeInUp 0.8s ease-out forwards; }
+    .funding-hero { animation: amountReveal 1s ease-out 0.2s forwards; opacity: 0; }
+    .dashboard-strip { animation: fadeInUp 0.6s ease-out 0.5s forwards; opacity: 0; }
+    .chart-wrapper { animation: chartReveal 1s ease-out 0.4s forwards; opacity: 0; }
+    .legend-item { animation: fadeInUp 0.6s ease-out forwards; opacity: 0; }
+    .legend-item:nth-child(2) { animation-delay: 0.6s; }
+    .legend-item:nth-child(3) { animation-delay: 0.75s; }
+    .legend-item:nth-child(4) { animation-delay: 0.9s; }
+    .legend-item:nth-child(5) { animation-delay: 1.05s; }
+    .legend-item:nth-child(6) { animation-delay: 1.2s; }
+    .status-bar { animation: fadeInUp 0.6s ease-out 1.3s forwards; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div class="slide slide-investment">
+
+    <!-- Background image with overlay -->
+    <div class="investment-bg">
+      <img src="../assets/images/slide-investment.jpg" alt="Financial dashboard">
+      <div class="investment-bg-overlay"></div>
+    </div>
+
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
+    <div class="scanlines"></div>
+
+    <!-- Decorative tech boxes -->
+    <div class="tech-accent tech-box one"></div>
+    <div class="tech-accent tech-box two"></div>
+
+    <!-- Corner frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Brand mini -->
+    <div class="brand-mini">SOLO</div>
+
+    <!-- Header -->
+    <div class="investment-header">
+      <div class="title-bar"></div>
+      <h2 class="section-title">INVESTMENT</h2>
+    </div>
+
+    <!-- Funding target hero -->
+    <div class="funding-hero">
+      <span class="funding-label">Seed Funding Target</span>
+      <div class="funding-amount">
+        <span class="funding-currency">$</span>4 MILLION
+      </div>
+    </div>
+
+    <!-- Dashboard strip -->
+    <div class="dashboard-strip">
+      <div class="strip-line"></div>
+      <span class="strip-label">Capital Allocation Breakdown</span>
+      <div class="strip-line right"></div>
+    </div>
+
+    <!-- Allocation container: donut chart + legend -->
+    <div class="allocation-container">
+
+      <!-- Donut Chart -->
+      <div class="chart-wrapper">
+        <div class="chart-outer-ring"></div>
+        <div class="chart-inner-ring"></div>
+        <div class="donut-chart">
+          <div class="donut-center">
+            <div class="donut-center-label">Total Raise</div>
+            <div class="donut-center-value">$4M</div>
+            <div class="donut-center-sub">Seed Round</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Legend -->
+      <div class="legend-panel">
+        <div class="legend-title">Allocation Distribution</div>
+
+        <div class="legend-item production">
+          <div class="legend-dot"></div>
+          <div class="legend-info">
+            <div class="legend-name">Production</div>
+            <div class="legend-desc">Manufacturing &amp; Supply Chain</div>
+          </div>
+          <div class="legend-value">
+            <div class="legend-pct">40%</div>
+            <div class="legend-amount">$1,600,000</div>
+          </div>
+        </div>
+
+        <div class="legend-item rd">
+          <div class="legend-dot"></div>
+          <div class="legend-info">
+            <div class="legend-name">R&amp;D</div>
+            <div class="legend-desc">Material Innovation &amp; Tech</div>
+          </div>
+          <div class="legend-value">
+            <div class="legend-pct">20%</div>
+            <div class="legend-amount">$800,000</div>
+          </div>
+        </div>
+
+        <div class="legend-item marketing">
+          <div class="legend-dot"></div>
+          <div class="legend-info">
+            <div class="legend-name">Marketing &amp; Promotion</div>
+            <div class="legend-desc">Brand Launch &amp; Campaigns</div>
+          </div>
+          <div class="legend-value">
+            <div class="legend-pct">20%</div>
+            <div class="legend-amount">$800,000</div>
+          </div>
+        </div>
+
+        <div class="legend-item platform">
+          <div class="legend-dot"></div>
+          <div class="legend-info">
+            <div class="legend-name">Platform Management</div>
+            <div class="legend-desc">Operations &amp; Team</div>
+          </div>
+          <div class="legend-value">
+            <div class="legend-pct">15%</div>
+            <div class="legend-amount">$600,000</div>
+          </div>
+        </div>
+
+        <div class="legend-item contingency">
+          <div class="legend-dot"></div>
+          <div class="legend-info">
+            <div class="legend-name">Contingency</div>
+            <div class="legend-desc">Reserve Fund</div>
+          </div>
+          <div class="legend-value">
+            <div class="legend-pct">5%</div>
+            <div class="legend-amount">$200,000</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Status bar -->
+    <div class="status-bar">
+      <div class="status-left">
+        <div class="status-dot"></div>
+        <span>Financial Model Active</span>
+        <div class="status-line"></div>
+      </div>
+      <div class="status-right">
+        <div class="status-line" style="background: linear-gradient(90deg, transparent, var(--solo-accent));"></div>
+        <span>FY 2025 - 2026</span>
+      </div>
+    </div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">13</span>
+    </div>
+
+  </div>
+</body>
+</html>

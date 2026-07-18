@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .bg { position:absolute; inset:0; z-index:0; }
+  .bg img { width:100%; height:100%; object-fit:cover; }
+  .bg-overlay { position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.15) 50%, rgba(0,0,0,0.45) 100%); z-index:1; }
+  h1.product-title { position:absolute; top:50px; left:70px; z-index:10; font-family:'Anton',sans-serif; font-size:120px; color:#fff; letter-spacing:5px; text-transform:uppercase; line-height:1; }
+  h2.product-sub { position:absolute; top:190px; left:70px; z-index:10; font-family:'Anton',sans-serif; font-size:56px; color:#fff; letter-spacing:3px; text-transform:uppercase; line-height:1; }
+  .callout { position:absolute; z-index:15; }
+  .callout-title { font-family:'Anton',sans-serif; font-size:52px; letter-spacing:2px; text-transform:uppercase; color: var(--hot-pink); text-shadow:0 0 15px var(--hot-pink-glow); margin-bottom:8px; line-height:1; }
+  .callout-box { background: var(--yellow-tag); color:#000; border-radius:20px; padding:14px 22px; font-family:'Inter',sans-serif; font-size:26px; font-weight:800; line-height:1.35; max-width:340px; position:relative; }
+  /* Connector lines: SVG based using absolute positioned pseudo elements */
+  .connector { position:absolute; z-index:12; pointer-events:none; }
+  .connector line { stroke:#fff; stroke-width:3; stroke-linecap:round; filter: drop-shadow(0 0 4px rgba(255,255,255,0.5)); }
+  .connector circle { fill:#fff; stroke:#fff; stroke-width:3; filter: drop-shadow(0 0 6px rgba(255,255,255,0.7)); }
+  /* Comfort - bottom left: points to midsole */
+  .callout.comfort { left:60px; bottom:90px; }
+  /* Customizable - upper right: points to upper */
+  .callout.custom { right:60px; top:260px; }
+  /* Sustainability - bottom right: points to heel */
+  .callout.sustain { right:60px; bottom:90px; }
+  .corner-logo { position:absolute; top:25px; right:35px; z-index:20; }
+  .corner-logo .solo-logo { position:static; font-size:56px; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="bg"><img src="../assets/sneaker_product.jpg" alt=""></div>
+  <div class="bg-overlay"></div>
+
+  <h1 class="product-title">OUR PRODUCT</h1>
+  <h2 class="product-sub">VERSATILE SPORTY SNEAKERS</h2>
+
+  <!-- Comfort connector: from box to sole area (approx x=480 from box right, going to shoe midsole) -->
+  <svg class="connector" style="left:400px; bottom:200px; width:500px; height:120px;" viewBox="0 0 500 120">
+    <line x1="0" y1="20" x2="480" y2="80"/>
+    <circle cx="480" cy="80" r="8"/>
+  </svg>
+
+  <!-- Customizable connector -->
+  <svg class="connector" style="right:400px; top:320px; width:460px; height:120px;" viewBox="0 0 460 120">
+    <line x1="460" y1="20" x2="20" y2="80"/>
+    <circle cx="20" cy="80" r="8"/>
+  </svg>
+
+  <!-- Sustainability connector -->
+  <svg class="connector" style="right:400px; bottom:180px; width:420px; height:120px;" viewBox="0 0 420 120">
+    <line x1="420" y1="30" x2="40" y2="80"/>
+    <circle cx="40" cy="80" r="8"/>
+  </svg>
+
+  <div class="callout comfort">
+    <div class="callout-title">Comfort</div>
+    <div class="callout-box">
+      <div>● Fantastic breathability</div>
+      <div>● Extra thick cushioning for all-day wear</div>
+      <div>● Feels lightweight</div>
+    </div>
+  </div>
+
+  <div class="callout custom">
+    <div class="callout-title">Customizable</div>
+    <div class="callout-box">Consumers can design their own shoes on the website according to their preferences</div>
+  </div>
+
+  <div class="callout sustain">
+    <div class="callout-title">Sustainability</div>
+    <div class="callout-box">We use 100% eco-friendly and sustainable materials</div>
+  </div>
+
+  <div class="corner-logo">
+    <div class="solo-logo"><span class="s-letter">S</span><span class="o1-letter">O</span><span class="l-letter">L</span><span class="o2-letter">O</span></div>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .page-bg { position:absolute; inset:0; background:#fff; z-index:0; }
+  /* Blueprint sneaker SVG illustration */
+  .blueprint-area { position:absolute; left:0; top:0; width:100%; height:100%; z-index:1; }
+  .corner-solo { position:absolute; top:40px; left:50px; z-index:10; }
+  .corner-solo .solo-logo { position:static; font-size:180px; line-height:0.8; letter-spacing:0; display:flex; flex-direction:column; }
+  .corner-solo .solo-logo span { display:block; line-height:0.85; }
+  .sr-info { position:absolute; top:30px; right:50px; text-align:right; font-family:'Inter',sans-serif; font-size:22px; color:#333; line-height:1.4; z-index:10; }
+  .sr-info .big { font-family:'Anton',sans-serif; font-size:36px; letter-spacing:2px; }
+  .material-tag { position:absolute; z-index:8; }
+  .material-tag .tag-head {
+    background: var(--red-label); color:#fff; font-family:'Anton',sans-serif; font-size:32px;
+    letter-spacing:1px; padding:8px 20px; border-radius:18px 18px 18px 4px; display:inline-block; margin-bottom:4px;
+  }
+  .material-tag .tag-body {
+    font-family:'Inter',sans-serif; font-size:22px; color:#222; font-weight:600; line-height:1.35; font-style:italic; max-width:300px;
+  }
+  .tag-line { position:absolute; height:2px; background:#333; z-index:5; }
+  .tag-dot { position:absolute; width:8px; height:8px; border-radius:50%; background:#333; z-index:6; }
+  /* Positions */
+  .mt-organic { top:460px; left:30px; }
+  .mt-hemp { top:80px; left:420px; }
+  .mt-recycled-poly { top:40px; right:420px; }
+  .mt-cork { top:150px; right:60px; }
+  .mt-recycled-rubber1 { top:520px; right:40px; }
+  .mt-water { bottom:50px; left:20px; }
+  .mt-recycled-rubber2 { bottom:80px; left:480px; }
+  .all-recyclable { position:absolute; bottom:30px; right:30px; background:var(--red-label); color:#fff; font-family:'Anton',sans-serif; font-size:38px; letter-spacing:2px; padding:10px 24px; border-radius:28px 28px 28px 6px; z-index:10; text-transform:uppercase; }
+  /* Sneaker sketch SVG container */
+  .sketch { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); width:1200px; height:800px; z-index:3; }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="page-bg"></div>
+
+  <div class="corner-solo">
+    <div class="solo-logo"><span class="s-letter">S</span><span class="o1-letter">O</span><span class="l-letter">L</span><span class="o2-letter">O</span></div>
+  </div>
+
+  <div class="sr-info">
+    <div class="big">SR C13</div>
+    <div>Teddy/Johnson</div>
+    <div>Jade/Pascal</div>
+  </div>
+
+  <!-- Blueprint-style sneaker sketch -->
+  <svg class="sketch" viewBox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <filter id="rough">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="2" result="noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1.5"/>
+      </filter>
+    </defs>
+    <g stroke="#1a3d6f" stroke-width="2" fill="none" opacity="0.85" stroke-linecap="round">
+      <!-- Main shoe body - profile view (technical blueprint style) -->
+      <!-- Sole -->
+      <path d="M 100,620 Q 150,680 300,660 L 700,640 Q 900,630 1050,600 Q 1100,580 1080,550 L 1050,520 Q 900,540 700,540 L 300,560 Q 150,570 120,590 Z" fill="#e8f0fa" stroke-width="2.5"/>
+      <!-- Sole tread lines -->
+      <line x1="180" y1="655" x2="180" y2="675"/>
+      <line x1="260" y1="660" x2="260" y2="680"/>
+      <line x1="340" y1="655" x2="340" y2="675"/>
+      <line x1="450" y1="650" x2="450" y2="670"/>
+      <line x1="560" y1="645" x2="560" y2="665"/>
+      <line x1="680" y1="640" x2="680" y2="660"/>
+      <line x1="800" y1="635" x2="800" y2="655"/>
+      <line x1="920" y1="620" x2="920" y2="640"/>
+      <line x1="1020" y1="600" x2="1020" y2="620"/>
+      <!-- Midsole cushion -->
+      <path d="M 130,590 Q 200,560 400,550 L 800,530 Q 1000,520 1070,530 Q 1050,500 900,500 L 400,510 Q 200,520 140,560 Z" fill="#d0e2f5" stroke-width="1.5"/>
+      <!-- Upper body -->
+      <path d="M 180,550 Q 200,380 380,320 Q 500,280 650,300 Q 800,310 880,380 Q 950,440 960,500 L 900,520 Q 700,530 300,540 Q 200,550 180,550 Z" fill="#f0f5fb" stroke-width="2.5"/>
+      <!-- Collar/ankle -->
+      <path d="M 600,300 Q 700,250 820,290 Q 880,320 880,380 Q 820,360 700,350 Q 620,340 600,300 Z" fill="#dce8f5" stroke-width="2"/>
+      <!-- Tongue -->
+      <path d="M 500,310 Q 520,240 600,250 Q 660,260 650,320 L 600,340 Q 540,340 500,310 Z" fill="#e4edf8" stroke-width="1.5"/>
+      <!-- Laces area -->
+      <line x1="540" y1="330" x2="620" y2="320"/>
+      <line x1="530" y1="370" x2="630" y2="360"/>
+      <line x1="525" y1="410" x2="640" y2="400"/>
+      <line x1="530" y1="450" x2="650" y2="440"/>
+      <line x1="545" y1="490" x2="670" y2="480"/>
+      <!-- Lace criss-cross -->
+      <path d="M 545,325 L 625,330" stroke-width="1.2"/>
+      <path d="M 555,330 L 615,365" stroke-width="1.2"/>
+      <path d="M 540,365 L 635,365" stroke-width="1.2"/>
+      <path d="M 545,370 L 625,405" stroke-width="1.2"/>
+      <path d="M 535,405 L 640,405" stroke-width="1.2"/>
+      <path d="M 540,410 L 630,445" stroke-width="1.2"/>
+      <path d="M 530,445 L 650,445" stroke-width="1.2"/>
+      <!-- Toe cap -->
+      <path d="M 180,550 Q 160,490 230,430 Q 300,380 380,400 L 350,490 Q 280,520 200,540 Z" fill="#dce8f5" stroke-width="1.5"/>
+      <!-- Heel counter -->
+      <path d="M 860,380 Q 940,400 960,490 L 900,520 Q 880,460 860,420 Z" fill="#c8d9ee" stroke-width="1.5"/>
+      <!-- SOLO logo on side -->
+      <text x="550" y="470" font-family="Anton,Impact,sans-serif" font-size="48" fill="#1a3d6f" font-weight="bold" letter-spacing="4" opacity="0.6">SOLO</text>
+      <!-- Stitching lines (dashed) -->
+      <path d="M 220,500 Q 350,400 550,370" stroke-width="1" stroke-dasharray="6,4"/>
+      <path d="M 700,370 Q 820,400 880,480" stroke-width="1" stroke-dasharray="6,4"/>
+      <path d="M 200,560 Q 400,530 700,520" stroke-width="1" stroke-dasharray="4,3"/>
+      <!-- Dimension lines (technical drawing) -->
+      <line x1="100" y1="690" x2="1080" y2="690" stroke="#1a3d6f" stroke-width="1" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+      <text x="560" y="720" font-family="Inter,sans-serif" font-size="18" fill="#1a3d6f" text-anchor="middle" font-style="italic">Length 280mm</text>
+      <!-- Smaller sketch top right -->
+      <g transform="translate(830,40) scale(0.4)" opacity="0.6">
+        <path d="M 100,620 Q 150,680 300,660 L 700,640 Q 900,630 1050,600 Q 1100,580 1080,550 L 1050,520 Q 900,540 700,540 L 300,560 Q 150,570 120,590 Z" fill="none" stroke="#1a3d6f" stroke-width="2"/>
+        <path d="M 180,550 Q 200,380 380,320 Q 500,280 650,300 Q 800,310 880,380 Q 950,440 960,500 L 900,520" fill="none" stroke="#1a3d6f" stroke-width="2"/>
+      </g>
+      <!-- Smaller sketch bottom right -->
+      <g transform="translate(780,580) scale(0.35)" opacity="0.6">
+        <path d="M 100,620 Q 150,680 300,660 L 700,640 Q 900,630 1050,600 Q 1100,580 1080,550 L 1050,520 Q 900,540 700,540 L 300,560 Q 150,570 120,590 Z" fill="none" stroke="#1a3d6f" stroke-width="2"/>
+        <path d="M 180,550 Q 200,380 380,320 Q 500,280 650,300 Q 800,310 880,380 Q 950,440 960,500 L 900,520" fill="none" stroke="#1a3d6f" stroke-width="2"/>
+      </g>
+      <!-- Cross-hair markers -->
+      <g stroke="#1a3d6f" stroke-width="0.8" opacity="0.4">
+        <line x1="400" y1="200" x2="400" y2="260"/><line x1="370" y1="230" x2="430" y2="230"/>
+        <line x1="850" y1="180" x2="850" y2="240"/><line x1="820" y1="210" x2="880" y2="210"/>
+      </g>
+    </g>
+    <defs>
+      <marker id="arrow" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+        <path d="M 0,0 L 10,5 L 0,10 Z" fill="#1a3d6f"/>
+      </marker>
+    </defs>
+  </svg>
+
+  <!-- Material tags with lines -->
+  <div class="material-tag mt-hemp">
+    <div class="tag-head">Hemp Laces:</div>
+    <div class="tag-body">Sustainable and durable alternatives to synthetic materials.</div>
+  </div>
+
+  <div class="material-tag mt-recycled-poly">
+    <div class="tag-head">Recycled Polyester Fleece:</div>
+    <div class="tag-body">Offers comfort and warmth while being eco-friendly.</div>
+  </div>
+
+  <div class="material-tag mt-cork">
+    <div class="tag-head">Cork:</div>
+    <div class="tag-body">Naturally antimicrobial and biodegradable, cork provides excellent cushioning and support.</div>
+  </div>
+
+  <div class="material-tag mt-organic">
+    <div class="tag-head">Organic Cotton:</div>
+    <div class="tag-body">Biodegradable and breathable, it provides comfort and is sustainably grown.</div>
+  </div>
+
+  <div class="material-tag mt-recycled-rubber1">
+    <div class="tag-head">Recycled Rubber:</div>
+    <div class="tag-body">Made from discarded tires, it offers durability and excellent grip.</div>
+  </div>
+
+  <div class="material-tag mt-water">
+    <div class="tag-head">Water-Based Adhesives:</div>
+    <div class="tag-body">Ensure that any glues used in assembly are environmentally friendly.</div>
+  </div>
+
+  <div class="material-tag mt-recycled-rubber2">
+    <div class="tag-head">Recycled Rubber:</div>
+    <div class="tag-body">Made from discarded tires, it offers durability and excellent grip.</div>
+  </div>
+
+  <div class="all-recyclable">All shoe materials are<br>100% recyclable</div>
+</div>
+</body>
+</html>

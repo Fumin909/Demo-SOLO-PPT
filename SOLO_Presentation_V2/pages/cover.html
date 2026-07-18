@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../css/design-system.css">
+<style>
+  .cover-bg { position: absolute; inset: 0; z-index: 0; }
+  .cover-bg img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) contrast(1.15); }
+  .cover-overlay { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.55) 100%); z-index: 1; }
+  .solo-graffiti {
+    position: absolute; left: 60px; top: 50%; transform: translateY(-50%);
+    font-family: 'Anton', Impact, sans-serif;
+    font-size: 720px; line-height: 0.85; letter-spacing: -10px;
+    z-index: 2; pointer-events: none;
+  }
+  .solo-graffiti .s-l { color: var(--magenta); text-shadow: 8px 8px 0 rgba(229,0,199,0.3); }
+  .solo-graffiti .o1-l { color: var(--hot-pink); text-shadow: 8px 8px 0 rgba(255,20,147,0.3); }
+  .solo-graffiti .l-l { color: var(--olive); text-shadow: 8px 8px 0 rgba(139,154,70,0.3); }
+  .solo-graffiti .o2-l { color: var(--neon-green); text-shadow: 8px 8px 0 rgba(57,255,20,0.3); }
+  .cover-content { position: absolute; right: 80px; top: 50%; transform: translateY(-50%); z-index: 3; text-align: right; }
+  .tagline { font-family: 'Anton', sans-serif; font-size: 58px; color: var(--hot-pink); text-shadow: 0 0 20px var(--hot-pink-glow); letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px; }
+  .main-title { font-family: 'Anton', sans-serif; font-size: 140px; line-height: 1; color: #fff; text-transform: uppercase; letter-spacing: 4px; }
+  .main-title em { font-style: normal; color: #fff; }
+  .footer-info { position: absolute; bottom: 50px; right: 80px; z-index: 3; text-align: right; }
+  .footer-info span { font-family: 'Anton', sans-serif; font-size: 44px; color: var(--hot-pink); text-shadow: 0 0 15px var(--hot-pink-glow); letter-spacing: 3px; margin-left: 30px; }
+  .splatter {
+    position: absolute; width: 40px; height: 40px; border-radius: 50%;
+    background: var(--magenta); opacity: 0.8; z-index: 2;
+  }
+</style>
+</head>
+<body>
+<div class="slide">
+  <div class="cover-bg"><img src="../assets/cover_bg.jpg" alt=""></div>
+  <div class="cover-overlay"></div>
+  <div class="solo-graffiti">
+    <span class="s-l">S</span><span class="o1-l">O</span><span class="l-l">L</span><span class="o2-l">O</span>
+  </div>
+  <div class="cover-content">
+    <div class="tagline">RUN FOR EXTRAORDINARY.</div>
+    <div class="main-title">Back To The<br><em>Future</em><br>Sneakers</div>
+  </div>
+  <div class="footer-info">
+    <span>SR C13 SOLO</span>
+    <span>Teddy / Johnson / Jade / Pascal</span>
+  </div>
+</div>
+</body>
+</html>

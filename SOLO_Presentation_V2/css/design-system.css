@@ -1,0 +1,420 @@
+/* ========================================
+   SOLO Presentation V2 - Street Style Design System
+   "Back To The Future Sneakers"
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Oswald:wght@400;700&family=Inter:wght@400;600;700;800;900&display=swap');
+
+/* ===== DESIGN TOKENS ===== */
+:root {
+  /* Core Colors */
+  --neon-green: #39FF14;
+  --neon-green-glow: #7CFC00;
+  --hot-pink: #FF1493;
+  --hot-pink-glow: #FF69B4;
+  --magenta: #E500C7;
+  --olive: #8B9A46;
+  --red-label: #E00000;
+  --yellow-tag: #FFE500;
+  --pure-black: #000000;
+  --pure-white: #FFFFFF;
+  --dark-gray: #1a1a1a;
+
+  /* Typography */
+  --font-display: 'Anton', 'Impact', 'Arial Black', sans-serif;
+  --font-condensed: 'Bebas Neue', 'Oswald', 'Impact', sans-serif;
+  --font-body: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Spacing */
+  --pad-page: 80px;
+  --gap-sm: 16px;
+  --gap-md: 32px;
+  --gap-lg: 60px;
+}
+
+/* ===== RESET & BASE ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+  font-family: var(--font-body);
+  background: var(--pure-black);
+  color: var(--pure-white);
+}
+.slide {
+  position: relative;
+  width: 1920px; height: 1080px;
+  overflow: hidden;
+}
+
+/* ===== SOLO GRAFFITI LOGO ===== */
+.solo-logo {
+  font-family: var(--font-display);
+  font-size: 72px;
+  letter-spacing: 4px;
+  position: absolute;
+  top: 30px; right: 50px;
+  display: flex;
+  line-height: 1;
+  z-index: 100;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+}
+.solo-logo.solo-logo-sm { font-size: 48px; top: 25px; right: 40px; }
+.solo-logo .s-letter { color: var(--magenta); }
+.solo-logo .o1-letter { color: var(--hot-pink); }
+.solo-logo .l-letter { color: var(--olive); }
+.solo-logo .o2-letter { color: var(--neon-green); }
+.solo-logo span {
+  display: inline-block;
+  -webkit-text-stroke: 1px rgba(0,0,0,0.3);
+  paint-order: stroke fill;
+}
+
+/* Giant SOLO background text (stencil/graffiti) */
+.solo-bg {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 600px;
+  line-height: 1;
+  opacity: 0.15;
+  z-index: 0;
+  letter-spacing: 20px;
+  pointer-events: none;
+}
+.solo-bg.solo-bg-left { left: -40px; top: 50%; transform: translateY(-50%); }
+.solo-bg.solo-bg-right { right: -40px; top: 50%; transform: translateY(-50%); }
+.solo-bg .s-letter { color: var(--magenta); }
+.solo-bg .o1-letter { color: var(--hot-pink); }
+.solo-bg .l-letter { color: var(--olive); }
+.solo-bg .o2-letter { color: var(--neon-green); }
+
+/* ===== TYPOGRAPHY ===== */
+.title-neon {
+  font-family: var(--font-display);
+  font-size: 130px;
+  line-height: 1;
+  color: var(--neon-green);
+  text-shadow:
+    0 0 10px var(--neon-green),
+    0 0 20px var(--neon-green),
+    0 0 40px var(--neon-green-glow),
+    0 0 80px rgba(57,255,20,0.5);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.title-neon-pink {
+  font-family: var(--font-display);
+  font-size: 130px;
+  line-height: 1;
+  color: var(--hot-pink);
+  text-shadow:
+    0 0 10px var(--hot-pink),
+    0 0 20px var(--hot-pink),
+    0 0 40px var(--hot-pink-glow);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.title-black {
+  font-family: var(--font-display);
+  font-size: 130px;
+  line-height: 1;
+  color: var(--pure-black);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.title-white {
+  font-family: var(--font-display);
+  font-size: 130px;
+  line-height: 1;
+  color: var(--pure-white);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+.title-sm { font-size: 90px; }
+.title-md { font-size: 110px; }
+
+.subtitle {
+  font-family: var(--font-display);
+  font-size: 52px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--pure-white);
+}
+.subtitle-pink {
+  font-family: var(--font-display);
+  font-size: 52px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--hot-pink);
+  text-shadow: 0 0 15px var(--hot-pink-glow);
+}
+.subtitle-green {
+  font-family: var(--font-display);
+  font-size: 52px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon-green);
+  text-shadow: 0 0 15px var(--neon-green);
+}
+
+.body-text {
+  font-family: var(--font-body);
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--pure-black);
+}
+.body-text-white {
+  font-family: var(--font-body);
+  font-size: 32px;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--pure-white);
+}
+.body-text-sm { font-size: 26px; }
+.body-text-lg { font-size: 38px; }
+
+/* ===== LABEL STICKERS ===== */
+.label-red {
+  display: inline-block;
+  background: var(--red-label);
+  color: var(--pure-white);
+  font-family: var(--font-display);
+  font-size: 42px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: 24px 24px 24px 8px;
+  position: relative;
+  line-height: 1.2;
+}
+.label-red::after {
+  content: '';
+  position: absolute;
+  right: -10px; bottom: -8px;
+  width: 30px; height: 30px;
+  background: var(--red-label);
+  border-radius: 0 0 20px 0;
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+.label-yellow {
+  display: inline-block;
+  background: var(--yellow-tag);
+  color: var(--pure-black);
+  font-family: var(--font-body);
+  font-size: 28px;
+  font-weight: 800;
+  padding: 14px 24px;
+  border-radius: 20px;
+  line-height: 1.3;
+  position: relative;
+}
+.label-yellow.label-name {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 2px;
+  padding: 10px 28px;
+  border-radius: 16px;
+}
+.label-green {
+  display: inline-block;
+  background: var(--neon-green);
+  color: var(--pure-black);
+  font-family: var(--font-display);
+  font-size: 42px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  border-radius: 24px;
+  line-height: 1.2;
+}
+.label-pink {
+  display: inline-block;
+  background: var(--hot-pink);
+  color: var(--pure-white);
+  font-family: var(--font-display);
+  font-size: 38px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  border-radius: 20px;
+  line-height: 1.2;
+}
+
+/* Speech bubble style (about us page) */
+.bubble-white {
+  background: rgba(255,255,255,0.92);
+  color: var(--pure-black);
+  padding: 28px 36px;
+  border-radius: 32px;
+  position: relative;
+}
+.bubble-white::after {
+  content: '';
+  position: absolute;
+  top: -20px; left: 40px;
+  width: 0; height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 24px solid rgba(255,255,255,0.92);
+}
+.bubble-green {
+  background: var(--neon-green);
+  color: var(--pure-black);
+  padding: 28px 36px;
+  border-radius: 32px;
+  font-weight: 800;
+}
+
+/* ===== WHITE CARD ===== */
+.card-white {
+  background: rgba(255,255,255,0.95);
+  border-radius: 48px;
+  padding: 48px 60px;
+  color: var(--pure-black);
+}
+
+/* ===== GREEN BAR ===== */
+.bar-green {
+  position: absolute;
+  left: 0; right: 0;
+  height: 160px;
+  background: var(--neon-green);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pad-page);
+}
+.bar-green.bar-top { top: 0; }
+.bar-green.bar-bottom { bottom: 0; }
+.bar-green h1 {
+  font-family: var(--font-display);
+  font-size: 110px;
+  color: var(--pure-white);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+/* ===== PHOTO BACKGROUNDS ===== */
+.bg-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: 0;
+}
+.bg-overlay-dark {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  z-index: 1;
+}
+.bg-overlay-darker {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  z-index: 1;
+}
+.bg-overlay-green {
+  position: absolute;
+  inset: 0;
+  background: rgba(57,255,20,0.15);
+  z-index: 1;
+}
+
+/* B&W filter for photos */
+.bw-photo {
+  filter: grayscale(100%) contrast(1.1);
+}
+
+/* ===== CIRCLE CROP ===== */
+.circle-frame {
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ===== CALLOUT LINE ===== */
+.callout-line {
+  position: absolute;
+  height: 3px;
+  background: var(--pure-white);
+  transform-origin: left center;
+  z-index: 10;
+}
+.callout-dot {
+  position: absolute;
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  background: var(--pure-white);
+  border: 3px solid var(--pure-white);
+  z-index: 10;
+}
+
+/* ===== BIG NUMBER ===== */
+.big-number {
+  font-family: var(--font-display);
+  font-size: 160px;
+  line-height: 1;
+  color: var(--pure-white);
+}
+
+/* ===== CHECK / X MARKS ===== */
+.mark-check {
+  color: var(--neon-green);
+  font-size: 80px;
+  font-weight: 900;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+.mark-x {
+  color: var(--red-label);
+  font-size: 80px;
+  font-weight: 900;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.2);
+}
+
+/* ===== FOOTER PINK BAR (Thank You) ===== */
+.bar-pink {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 140px;
+  background: var(--hot-pink-glow);
+  display: flex;
+  align-items: center;
+  padding: 0 var(--pad-page);
+  gap: 60px;
+}
+.bar-pink span {
+  font-family: var(--font-body);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--pure-black);
+}
+.bar-pink .footer-label {
+  font-family: var(--font-display);
+  font-size: 36px;
+  letter-spacing: 2px;
+}
+
+/* ===== NEON GLOW UTILITIES ===== */
+.glow-green { text-shadow: 0 0 10px var(--neon-green), 0 0 30px var(--neon-green); }
+.glow-pink { text-shadow: 0 0 10px var(--hot-pink), 0 0 30px var(--hot-pink-glow); }
+.glow-box-green { box-shadow: 0 0 20px var(--neon-green), 0 0 40px rgba(57,255,20,0.4); }
+.glow-box-pink { box-shadow: 0 0 20px var(--hot-pink), 0 0 40px rgba(255,20,147,0.4); }
+
+/* ===== PAGE NUMBER ===== */
+.page-num {
+  position: absolute;
+  bottom: 30px; right: 50px;
+  font-family: var(--font-condensed);
+  font-size: 24px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 2px;
+}
+
+/* ===== NEON ICON SIMPLE ===== */
+.neon-icon {
+  width: 60px; height: 60px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
