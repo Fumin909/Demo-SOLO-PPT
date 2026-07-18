@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Founders</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Founders slide specific styles */
+    .founders-gradient {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(to right, rgba(10,10,10,0.85) 0%, rgba(10,10,10,0.3) 35%, rgba(10,10,10,0) 60%),
+        linear-gradient(to top, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.2) 40%, rgba(10,10,10,0) 60%);
+      z-index: 1;
+    }
+
+    .founders-title {
+      position: absolute;
+      top: 100px;
+      left: 100px;
+      z-index: 5;
+    }
+
+    .founders-title .section-title {
+      color: var(--solo-text);
+    }
+
+    .founders-title .accent-line {
+      width: 120px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-top: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .founders-row {
+      position: absolute;
+      bottom: 140px;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      gap: 60px;
+      padding: 0 100px;
+      z-index: 5;
+    }
+
+    .founder-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      flex: 1;
+      max-width: 340px;
+    }
+
+    .founder-role-tag {
+      display: inline-block;
+      padding: 6px 18px;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: var(--solo-text-dim);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-full);
+      background: rgba(20,20,20,0.6);
+      backdrop-filter: blur(8px);
+    }
+
+    .founder-name-tag {
+      display: inline-block;
+      padding: 12px 32px;
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      border-radius: var(--radius-full);
+      transition: all 0.3s ease;
+    }
+
+    .founder-name-tag.neon-green {
+      background: var(--solo-primary);
+      color: var(--solo-bg-dark);
+      box-shadow: 0 0 30px var(--solo-primary-glow);
+    }
+
+    .founder-name-tag.neon-outline {
+      background: transparent;
+      color: var(--solo-text);
+      border: 2px solid var(--solo-primary);
+    }
+
+    .founder-name-tag.white-solid {
+      background: var(--solo-text);
+      color: var(--solo-bg-dark);
+    }
+
+    .founder-divider {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, rgba(57,255,20,0.4), transparent);
+      margin-top: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide">
+    <!-- Background Image -->
+    <div class="slide-bg">
+      <img src="../assets/images/slide-founders.jpg" alt="SOLO Founders">
+      <div class="founders-gradient"></div>
+    </div>
+
+    <!-- Grid Lines -->
+    <div class="grid-lines"></div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent bottom-right"></div>
+
+    <!-- Title -->
+    <div class="founders-title">
+      <h2 class="section-title">FOUNDERS<br>OF SOLO</h2>
+      <div class="accent-line"></div>
+    </div>
+
+    <!-- Founders Row -->
+    <div class="founders-row">
+      <!-- Founder 1: CEO TEDDY -->
+      <div class="founder-card">
+        <span class="founder-role-tag">CEO</span>
+        <span class="founder-name-tag neon-green">TEDDY</span>
+      </div>
+
+      <div class="founder-divider"></div>
+
+      <!-- Founder 2: CTO PASCAL -->
+      <div class="founder-card">
+        <span class="founder-role-tag">CTO</span>
+        <span class="founder-name-tag neon-green">PASCAL</span>
+      </div>
+
+      <div class="founder-divider"></div>
+
+      <!-- Founder 3: CMO JADE -->
+      <div class="founder-card">
+        <span class="founder-role-tag">CMO</span>
+        <span class="founder-name-tag neon-outline">JADE</span>
+      </div>
+
+      <div class="founder-divider"></div>
+
+      <!-- Founder 4: CFO JOHNSON -->
+      <div class="founder-card">
+        <span class="founder-role-tag">CFO</span>
+        <span class="founder-name-tag white-solid">JOHNSON</span>
+      </div>
+    </div>
+
+    <!-- Page Number -->
+    <div class="page-number">
+      <span class="current">03</span>
+    </div>
+  </div>
+</body>
+</html>

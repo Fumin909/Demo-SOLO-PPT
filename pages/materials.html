@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Product Materials</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 07 - Product Materials specific styles */
+
+    .slide-materials {
+      background: #0A0A0A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle texture overlay */
+    .materials-texture {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.04;
+      background-image:
+        radial-gradient(circle at 25% 25%, rgba(57,255,20,0.3) 1px, transparent 1px),
+        radial-gradient(circle at 75% 75%, rgba(57,255,20,0.2) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* Ambient glow */
+    .materials-glow {
+      position: absolute;
+      top: 50%;
+      left: 30%;
+      width: 800px;
+      height: 800px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(57, 255, 20, 0.06) 0%, transparent 60%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Left side image */
+    .materials-image {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42%;
+      height: 100%;
+      z-index: 2;
+    }
+
+    .materials-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .materials-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 180px;
+      height: 100%;
+      background: linear-gradient(to right, transparent 0%, #0A0A0A 100%);
+    }
+
+    /* Decorative frame around image */
+    .materials-image-frame {
+      position: absolute;
+      top: 80px;
+      left: 60px;
+      width: calc(42% - 100px);
+      height: calc(100% - 160px);
+      border: 1px solid rgba(57, 255, 20, 0.2);
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .materials-image-frame::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: 40px;
+      height: 40px;
+      border-top: 3px solid var(--solo-primary);
+      border-left: 3px solid var(--solo-primary);
+    }
+
+    .materials-image-frame::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: -1px;
+      width: 40px;
+      height: 40px;
+      border-bottom: 3px solid var(--solo-primary);
+      border-left: 3px solid var(--solo-primary);
+    }
+
+    /* Image corner tag */
+    .image-tag {
+      position: absolute;
+      bottom: 120px;
+      left: 80px;
+      z-index: 5;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-primary);
+      opacity: 0.7;
+    }
+
+    .image-tag::before {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--solo-primary);
+      vertical-align: middle;
+      margin-right: 12px;
+    }
+
+    /* Right content area */
+    .materials-content {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 62%;
+      height: 100%;
+      z-index: 4;
+      padding: 100px 80px 100px 60px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .materials-header {
+      margin-bottom: 50px;
+    }
+
+    .materials-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--solo-primary);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .materials-eyebrow::before,
+    .materials-eyebrow::after {
+      content: '';
+      display: inline-block;
+      width: 30px;
+      height: 1px;
+      background: var(--solo-primary);
+      vertical-align: middle;
+      margin: 0 14px;
+      opacity: 0.5;
+    }
+
+    .materials-title {
+      font-family: var(--font-display);
+      font-size: 68px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--solo-text);
+      line-height: 1;
+      margin-bottom: 28px;
+    }
+
+    .materials-title .neon-word {
+      color: var(--solo-primary);
+      text-shadow: 0 0 40px var(--solo-primary-glow);
+    }
+
+    .materials-subtitle {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.4;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      letter-spacing: 0.5px;
+    }
+
+    .materials-subtitle .recycle-badge {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 3px;
+      padding: 4px 12px;
+      border: 1px solid var(--solo-primary);
+      border-radius: var(--radius-full);
+      margin-left: 16px;
+      vertical-align: middle;
+      color: var(--solo-primary);
+      text-shadow: none;
+    }
+
+    /* Materials columns */
+    .materials-columns {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 28px;
+      flex: 1;
+    }
+
+    .material-column {
+      background: rgba(20, 20, 20, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .material-column::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--solo-primary), transparent);
+    }
+
+    .material-column.accent-pink::before {
+      background: linear-gradient(90deg, var(--solo-accent), transparent);
+    }
+
+    .material-column:hover {
+      border-color: rgba(57, 255, 20, 0.3);
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.1);
+      transform: translateY(-4px);
+    }
+
+    .material-column.accent-pink:hover {
+      border-color: rgba(255, 0, 255, 0.3);
+      box-shadow: 0 0 40px rgba(255, 0, 255, 0.1);
+    }
+
+    /* Column category label */
+    .category-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .category-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: rgba(57, 255, 20, 0.1);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .category-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--solo-primary);
+      fill: none;
+      stroke-width: 2;
+    }
+
+    .material-column.accent-pink .category-icon {
+      background: rgba(255, 0, 255, 0.1);
+      border-color: rgba(255, 0, 255, 0.3);
+    }
+
+    .material-column.accent-pink .category-icon svg {
+      stroke: var(--solo-accent);
+    }
+
+    .category-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--solo-text);
+      line-height: 1.3;
+    }
+
+    .category-name span {
+      display: block;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 3px;
+      color: var(--solo-text-dim);
+      margin-top: 4px;
+    }
+
+    /* Material items list */
+    .material-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .material-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 0;
+      transition: all 0.2s ease;
+    }
+
+    .material-item:hover {
+      padding-left: 6px;
+    }
+
+    .material-bullet {
+      flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      margin-top: 6px;
+      position: relative;
+    }
+
+    .material-bullet::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 8px;
+      height: 8px;
+      background: var(--solo-primary);
+      transform: translate(-50%, -50%) rotate(45deg);
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+    }
+
+    .material-column.accent-pink .material-bullet::before {
+      background: var(--solo-accent);
+      box-shadow: 0 0 8px var(--solo-accent-glow);
+    }
+
+    .material-info {
+      flex: 1;
+    }
+
+    .material-name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--solo-text);
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .material-desc {
+      font-size: 13px;
+      color: var(--solo-text-dim);
+      letter-spacing: 0.3px;
+      line-height: 1.4;
+    }
+
+    /* Bottom stats bar */
+    .materials-stats {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid rgba(57, 255, 20, 0.15);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      letter-spacing: 1px;
+    }
+
+    .stat-label {
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    /* Floating particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 2px;
+      height: 2px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      opacity: 0.3;
+      box-shadow: 0 0 6px var(--solo-primary-glow);
+      animation: particleFloat 8s infinite ease-in-out;
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.1; }
+      50% { transform: translateY(-25px) translateX(8px); opacity: 0.5; }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .materials-header { animation: fadeInUp 0.8s ease-out forwards; }
+    .material-column:nth-child(1) { animation: fadeInUp 0.7s ease-out 0.2s forwards; opacity: 0; }
+    .material-column:nth-child(2) { animation: fadeInUp 0.7s ease-out 0.4s forwards; opacity: 0; }
+    .material-column:nth-child(3) { animation: fadeInUp 0.7s ease-out 0.6s forwards; opacity: 0; }
+    .materials-stats { animation: fadeInUp 0.7s ease-out 0.8s forwards; opacity: 0; }
+    .materials-image { animation: fadeInLeft 0.9s ease-out forwards; }
+  </style>
+</head>
+<body>
+  <div class="slide slide-materials">
+
+    <!-- Background texture -->
+    <div class="materials-texture"></div>
+    <div class="grid-lines"></div>
+
+    <!-- Ambient glow -->
+    <div class="materials-glow"></div>
+
+    <!-- Floating particles -->
+    <div class="particles">
+      <div class="particle" style="top: 20%; left: 55%; animation-delay: 0s;"></div>
+      <div class="particle" style="top: 40%; left: 70%; animation-delay: 1s;"></div>
+      <div class="particle" style="top: 60%; left: 60%; animation-delay: 2s;"></div>
+      <div class="particle" style="top: 30%; right: 10%; animation-delay: 1.5s;"></div>
+      <div class="particle" style="top: 75%; right: 20%; animation-delay: 2.5s;"></div>
+      <div class="particle" style="top: 50%; left: 80%; animation-delay: 3s;"></div>
+      <div class="particle" style="top: 85%; left: 65%; animation-delay: 0.5s;"></div>
+    </div>
+
+    <!-- Left side image -->
+    <div class="materials-image">
+      <img src="../assets/images/slide-materials.jpg" alt="Sustainable Materials">
+    </div>
+
+    <!-- Image frame decoration -->
+    <div class="materials-image-frame"></div>
+
+    <!-- Image tag -->
+    <div class="image-tag">Sustainable Craft</div>
+
+    <!-- Right content -->
+    <div class="materials-content">
+
+      <!-- Header -->
+      <div class="materials-header">
+        <div class="materials-eyebrow">Product Materials</div>
+        <h1 class="materials-title">
+          <span class="neon-word">Eco</span>-Conscious<br>Material Science
+        </h1>
+        <div class="materials-subtitle">
+          All shoe materials are 100% recyclable.
+          <span class="recycle-badge">ZERO WASTE</span>
+        </div>
+      </div>
+
+      <!-- Three material columns -->
+      <div class="materials-columns">
+
+        <!-- Column 1: Upper Materials -->
+        <div class="material-column">
+          <div class="category-label">
+            <div class="category-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/>
+              </svg>
+            </div>
+            <div class="category-name">
+              Upper Materials
+              <span>Breathable & Natural</span>
+            </div>
+          </div>
+          <ul class="material-list">
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Organic Cotton</div>
+                <div class="material-desc">Grown without synthetic pesticides</div>
+              </div>
+            </li>
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Hemp Laces</div>
+                <div class="material-desc">Durable, biodegradable natural fiber</div>
+              </div>
+            </li>
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Recycled Polyester Fleece</div>
+                <div class="material-desc">Made from post-consumer plastic bottles</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Midsole Materials -->
+        <div class="material-column accent-pink">
+          <div class="category-label">
+            <div class="category-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="7" width="20" height="14" rx="2"/>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+              </svg>
+            </div>
+            <div class="category-name">
+              Midsole Materials
+              <span>Cushioning & Support</span>
+            </div>
+          </div>
+          <ul class="material-list">
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">EVA</div>
+                <div class="material-desc">Lightweight foam, fully recyclable compound</div>
+              </div>
+            </li>
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Natural Rubber</div>
+                <div class="material-desc">Sourced from sustainable rubber plantations</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Dyes & Decorations -->
+        <div class="material-column">
+          <div class="category-label">
+            <div class="category-icon">
+              <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="13.5" cy="6.5" r="2.5"/>
+                <circle cx="19" cy="13" r="2.5"/>
+                <circle cx="6" cy="12" r="2.5"/>
+                <circle cx="10" cy="19" r="2.5"/>
+                <path d="M12 2a10 10 0 0 0 0 20 2 2 0 0 0 2-2 2 2 0 0 1 2-2h2a4 4 0 0 0 4-4 10 10 0 0 0-10-10z"/>
+              </svg>
+            </div>
+            <div class="category-name">
+              Dyes & Decorations
+              <span>Non-Toxic Finishes</span>
+            </div>
+          </div>
+          <ul class="material-list">
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Natural Dyes</div>
+                <div class="material-desc">Plant-based pigments, no heavy metals</div>
+              </div>
+            </li>
+            <li class="material-item">
+              <div class="material-bullet"></div>
+              <div class="material-info">
+                <div class="material-name">Water-Based Adhesives</div>
+                <div class="material-desc">Zero VOC, solvent-free bonding</div>
+              </div>
+            </li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom stats bar -->
+      <div class="materials-stats">
+        <div class="stat-item">
+          <div class="stat-value">100%</div>
+          <div class="stat-label">Recyclable</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Toxic Chemicals</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">7</div>
+          <div class="stat-label">Eco Materials</div>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <div class="stat-value">ORG</div>
+          <div class="stat-label">Certified</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent bottom-right"></div>
+
+    <!-- Page Number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">07</span>
+    </div>
+
+  </div>
+</body>
+</html>

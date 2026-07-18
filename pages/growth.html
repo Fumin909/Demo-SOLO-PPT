@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - 2025-2028 Growth Plan</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 14 - Growth Plan specific styles */
+
+    .slide-growth {
+      background: #0A0A0A;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Full-screen background image - global network map */
+    .growth-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .growth-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .growth-bg-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        radial-gradient(ellipse at 50% 60%, rgba(57, 255, 20, 0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(255, 0, 255, 0.05) 0%, transparent 40%),
+        linear-gradient(135deg, rgba(10,10,10,0.9) 0%, rgba(10,10,10,0.78) 50%, rgba(10,10,10,0.92) 100%);
+    }
+
+    /* Grid overlay */
+    .grid-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      opacity: 0.04;
+      background-image:
+        linear-gradient(var(--solo-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--solo-primary) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+    }
+
+    /* Network dots animation - subtle data points */
+    .network-particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0.3;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--solo-primary-glow);
+    }
+
+    /* Corner frames */
+    .corner-frame {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+    }
+    .corner-frame.tl {
+      top: 40px;
+      left: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.tr {
+      top: 40px;
+      right: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Brand mini */
+    .brand-mini {
+      position: absolute;
+      top: 60px;
+      right: 100px;
+      z-index: 10;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: var(--solo-text-dim);
+    }
+
+    /* Header */
+    .growth-header {
+      position: absolute;
+      top: 90px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+    }
+
+    .title-bar {
+      width: 80px;
+      height: 4px;
+      background: var(--solo-primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    .growth-header .section-title {
+      color: var(--solo-text);
+      font-size: 58px;
+      letter-spacing: 1px;
+    }
+
+    .subtitle-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-top: 16px;
+    }
+
+    .subtitle-neon {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .subtitle-line {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--solo-primary), rgba(57,255,20,0.2) 60%, transparent);
+      opacity: 0.5;
+      max-width: 300px;
+    }
+
+    .subtitle-tag {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+    }
+
+    /* Main timeline container */
+    .timeline-container {
+      position: absolute;
+      top: 310px;
+      left: 100px;
+      right: 100px;
+      bottom: 160px;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Growth trajectory SVG line area */
+    .trajectory-area {
+      position: relative;
+      height: 200px;
+      margin-bottom: 30px;
+      flex-shrink: 0;
+    }
+
+    /* Bar chart visualization */
+    .bar-chart {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 160px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-around;
+      padding: 0 40px;
+    }
+
+    .bar-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    .bar {
+      width: 60px;
+      border-radius: 4px 4px 0 0;
+      position: relative;
+      background: linear-gradient(to top, var(--solo-primary-dark), var(--solo-primary));
+      box-shadow: 0 0 20px var(--solo-primary-glow), inset 0 1px 0 rgba(255,255,255,0.2);
+      transition: height 1s ease-out;
+    }
+
+    .bar::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--solo-primary-bright);
+      box-shadow: 0 0 12px var(--solo-primary-glow);
+      border-radius: 4px 4px 0 0;
+    }
+
+    .bar.final {
+      background: linear-gradient(to top, var(--solo-primary-dark), var(--solo-primary), var(--solo-primary-bright));
+      box-shadow:
+        0 0 30px var(--solo-primary-glow),
+        0 0 60px rgba(57, 255, 20, 0.3),
+        inset 0 1px 0 rgba(255,255,255,0.3);
+      width: 72px;
+    }
+
+    .bar-label {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--solo-text-muted);
+      letter-spacing: 1px;
+    }
+
+    /* Stage cards row */
+    .stages-row {
+      flex: 1;
+      display: flex;
+      align-items: stretch;
+      gap: 28px;
+      position: relative;
+    }
+
+    /* Connecting trajectory line behind cards */
+    .trajectory-line {
+      position: absolute;
+      top: -230px;
+      left: 0;
+      right: 0;
+      height: 230px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .trajectory-line svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Stage card */
+    .stage-card {
+      flex: 1;
+      position: relative;
+      background: rgba(20, 20, 20, 0.65);
+      border: 1px solid rgba(57, 255, 20, 0.15);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px 28px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1;
+      transition: all 0.3s ease;
+    }
+
+    .stage-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--solo-primary), transparent);
+      opacity: 0.6;
+    }
+
+    .stage-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      right: 20%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(57, 255, 20, 0.3), transparent);
+    }
+
+    /* Glow intensity increases per stage */
+    .stage-card:nth-child(1) {
+      box-shadow: 0 0 30px rgba(57, 255, 20, 0.05), inset 0 1px 0 rgba(57, 255, 20, 0.08);
+    }
+    .stage-card:nth-child(2) {
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.08), inset 0 1px 0 rgba(57, 255, 20, 0.1);
+      border-color: rgba(57, 255, 20, 0.2);
+    }
+    .stage-card:nth-child(3) {
+      box-shadow: 0 0 50px rgba(57, 255, 20, 0.12), inset 0 1px 0 rgba(57, 255, 20, 0.12);
+      border-color: rgba(57, 255, 20, 0.25);
+    }
+    .stage-card:nth-child(4) {
+      border-color: rgba(57, 255, 20, 0.4);
+      box-shadow:
+        0 0 60px rgba(57, 255, 20, 0.2),
+        0 0 120px rgba(57, 255, 20, 0.1),
+        inset 0 1px 0 rgba(57, 255, 20, 0.2);
+      background: rgba(25, 30, 20, 0.7);
+    }
+
+    /* Stage card corner accents */
+    .card-corner {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+    }
+    .card-corner.tl {
+      top: 12px;
+      left: 12px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.5;
+    }
+    .card-corner.br {
+      bottom: 12px;
+      right: 12px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.5;
+    }
+    .stage-card:nth-child(4) .card-corner {
+      opacity: 0.9;
+      box-shadow: -2px -2px 10px var(--solo-primary-glow);
+    }
+    .stage-card:nth-child(4) .card-corner.br {
+      box-shadow: 2px 2px 10px var(--solo-primary-glow);
+    }
+
+    /* Year badge */
+    .stage-year {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .year-badge {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 800;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .stage-card:nth-child(1) .year-badge {
+      background: rgba(57, 255, 20, 0.15);
+      color: var(--solo-primary);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+    }
+    .stage-card:nth-child(2) .year-badge {
+      background: rgba(57, 255, 20, 0.2);
+      color: var(--solo-primary);
+      border: 1px solid rgba(57, 255, 20, 0.4);
+      box-shadow: 0 0 12px rgba(57, 255, 20, 0.1);
+    }
+    .stage-card:nth-child(3) .year-badge {
+      background: rgba(57, 255, 20, 0.25);
+      color: var(--solo-primary);
+      border: 1px solid rgba(57, 255, 20, 0.5);
+      box-shadow: 0 0 16px rgba(57, 255, 20, 0.15);
+    }
+    .stage-card:nth-child(4) .year-badge {
+      background: var(--solo-primary);
+      color: var(--solo-bg-dark);
+      box-shadow: 0 0 24px var(--solo-primary-glow);
+    }
+
+    .stage-marker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--solo-text-dim);
+      text-transform: uppercase;
+    }
+
+    /* Pairs number - hero metric */
+    .stage-pairs {
+      font-family: var(--font-display);
+      font-weight: 900;
+      color: var(--solo-text);
+      line-height: 1;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+
+    .stage-card:nth-child(1) .stage-pairs { font-size: 44px; }
+    .stage-card:nth-child(2) .stage-pairs { font-size: 48px; }
+    .stage-card:nth-child(3) .stage-pairs { font-size: 52px; }
+    .stage-card:nth-child(4) .stage-pairs {
+      font-size: 56px;
+      color: var(--solo-primary);
+      text-shadow: 0 0 30px var(--solo-primary-glow);
+    }
+
+    .pairs-unit {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--solo-text-muted);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .stage-card:nth-child(4) .pairs-unit {
+      color: var(--solo-primary-bright);
+    }
+
+    /* Divider */
+    .stage-divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--solo-primary), transparent);
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    .stage-card:nth-child(4) .stage-divider {
+      width: 60px;
+      opacity: 0.9;
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+    }
+
+    /* Revenue */
+    .revenue-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      margin-bottom: 6px;
+    }
+
+    .revenue-value {
+      font-family: var(--font-display);
+      font-size: 32px;
+      font-weight: 900;
+      color: var(--solo-text);
+      line-height: 1;
+    }
+
+    .revenue-value .cur {
+      font-size: 20px;
+      font-weight: 800;
+      vertical-align: super;
+      color: var(--solo-primary);
+      margin-right: 2px;
+    }
+
+    .stage-card:nth-child(4) .revenue-value {
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+    }
+
+    /* Growth percentage badge */
+    .growth-badge {
+      position: absolute;
+      top: -14px;
+      right: 20px;
+      padding: 4px 12px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      border-radius: var(--radius-full);
+      background: var(--solo-accent);
+      color: var(--solo-text);
+      box-shadow: 0 0 16px var(--solo-accent-glow);
+      text-transform: uppercase;
+    }
+
+    .stage-card:nth-child(1) .growth-badge { display: none; }
+    .stage-card:nth-child(2) .growth-badge { background: rgba(255,0,255,0.2); color: var(--solo-accent); border: 1px solid rgba(255,0,255,0.3); }
+    .stage-card:nth-child(3) .growth-badge { background: rgba(255,0,255,0.3); color: var(--solo-accent); border: 1px solid rgba(255,0,255,0.4); }
+    .stage-card:nth-child(4) .growth-badge {
+      background: var(--solo-accent);
+      color: var(--solo-text);
+      box-shadow: 0 0 20px var(--solo-accent-glow);
+    }
+
+    /* Connection arrows between cards */
+    .card-arrow {
+      position: absolute;
+      top: 50%;
+      right: -22px;
+      transform: translateY(-50%);
+      width: 16px;
+      height: 16px;
+      z-index: 5;
+      opacity: 0.7;
+    }
+
+    .card-arrow::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 16px;
+      height: 2px;
+      background: var(--solo-primary);
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+      transform: translateY(-50%);
+    }
+
+    .card-arrow::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 8px;
+      height: 8px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      transform: translateY(-50%) rotate(45deg);
+      box-shadow: 2px -2px 6px var(--solo-primary-glow);
+    }
+
+    .stage-card:last-child .card-arrow { display: none; }
+
+    /* Bottom metrics strip */
+    .metrics-strip {
+      position: absolute;
+      bottom: 100px;
+      left: 100px;
+      right: 100px;
+      z-index: 10;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 60px;
+      padding: 20px 0;
+      border-top: 1px solid rgba(57, 255, 20, 0.1);
+      border-bottom: 1px solid rgba(57, 255, 20, 0.1);
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .metric-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--solo-primary);
+      text-shadow: 0 0 16px var(--solo-primary-glow);
+      line-height: 1;
+    }
+
+    .metric-value.pink {
+      color: var(--solo-accent);
+      text-shadow: 0 0 16px var(--solo-accent-glow);
+    }
+
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+    }
+
+    .metric-sep {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, transparent, rgba(57,255,20,0.3), transparent);
+    }
+
+    /* Decorative tech elements */
+    .tech-accent {
+      position: absolute;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .tech-ring {
+      border: 1px solid rgba(57, 255, 20, 0.1);
+      border-radius: 50%;
+    }
+
+    .tech-ring.one {
+      top: -100px;
+      right: -100px;
+      width: 400px;
+      height: 400px;
+      box-shadow: 0 0 40px rgba(57, 255, 20, 0.05);
+    }
+
+    .tech-ring.two {
+      bottom: -80px;
+      left: -60px;
+      width: 280px;
+      height: 280px;
+      border-color: rgba(255, 0, 255, 0.08);
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes barGrow {
+      from { height: 0; opacity: 0; }
+    }
+    @keyframes drawPath {
+      from { stroke-dashoffset: 2000; }
+      to { stroke-dashoffset: 0; }
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 60px rgba(57,255,20,0.2), 0 0 120px rgba(57,255,20,0.1); }
+      50% { box-shadow: 0 0 80px rgba(57,255,20,0.3), 0 0 160px rgba(57,255,20,0.15); }
+    }
+
+    .growth-header { animation: fadeInUp 0.8s ease-out forwards; }
+    .trajectory-area { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
+
+    .stage-card { animation: fadeInUp 0.7s ease-out forwards; opacity: 0; }
+    .stage-card:nth-child(1) { animation-delay: 0.3s; }
+    .stage-card:nth-child(2) { animation-delay: 0.45s; }
+    .stage-card:nth-child(3) { animation-delay: 0.6s; }
+    .stage-card:nth-child(4) { animation-delay: 0.75s; }
+    .stage-card:nth-child(4) { animation: fadeInUp 0.7s ease-out 0.75s forwards, pulseGlow 3s ease-in-out 1.5s infinite; }
+
+    .bar { animation: barGrow 1s ease-out forwards; opacity: 0; }
+    .bar-wrapper:nth-child(1) .bar { animation-delay: 0.5s; height: 24px; }
+    .bar-wrapper:nth-child(2) .bar { animation-delay: 0.65s; height: 54px; }
+    .bar-wrapper:nth-child(3) .bar { animation-delay: 0.8s; height: 108px; }
+    .bar-wrapper:nth-child(4) .bar { animation-delay: 0.95s; height: 160px; }
+
+    .metrics-strip { animation: fadeInUp 0.6s ease-out 1.1s forwards; opacity: 0; }
+
+    .trajectory-path {
+      stroke-dasharray: 2000;
+      animation: drawPath 2s ease-out 0.4s forwards;
+      stroke-dashoffset: 2000;
+    }
+  </style>
+</head>
+<body>
+  <div class="slide slide-growth">
+
+    <!-- Background image with overlay -->
+    <div class="growth-bg">
+      <img src="../assets/images/slide-growth.jpg" alt="Global network map">
+      <div class="growth-bg-overlay"></div>
+    </div>
+
+    <!-- Grid overlay -->
+    <div class="grid-overlay"></div>
+
+    <!-- Decorative rings -->
+    <div class="tech-accent tech-ring one"></div>
+    <div class="tech-accent tech-ring two"></div>
+
+    <!-- Corner frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Brand mini -->
+    <div class="brand-mini">SOLO</div>
+
+    <!-- Header -->
+    <div class="growth-header">
+      <div class="title-bar"></div>
+      <h2 class="section-title">2025–2028 GROWTH PLAN</h2>
+      <div class="subtitle-row">
+        <span class="subtitle-neon">Product Sales Goal</span>
+        <div class="subtitle-line"></div>
+        <span class="subtitle-tag">4-Year Trajectory</span>
+      </div>
+    </div>
+
+    <!-- Timeline container -->
+    <div class="timeline-container">
+
+      <!-- Trajectory area with bar chart and SVG line -->
+      <div class="trajectory-area">
+        <!-- SVG growth curve -->
+        <div class="trajectory-line">
+          <svg viewBox="0 0 1720 230" preserveAspectRatio="none">
+            <defs>
+              <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#39FF14" stop-opacity="0.3"/>
+                <stop offset="100%" stop-color="#39FF14" stop-opacity="1"/>
+              </linearGradient>
+              <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                <stop offset="0%" stop-color="#39FF14" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#39FF14" stop-opacity="0"/>
+              </linearGradient>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feMerge>
+                  <feMergeNode in="coloredBlur"/>
+                  <feMergeNode in="SourceGraphic"/>
+                </feMerge>
+              </filter>
+            </defs>
+            <!-- Area fill under curve -->
+            <path
+              d="M 100 200 Q 400 180, 550 140 T 950 80 T 1400 30 L 1620 20 L 1620 230 L 100 230 Z"
+              fill="url(#areaGrad)"
+              opacity="0.6"
+            />
+            <!-- Main trajectory curve -->
+            <path
+              class="trajectory-path"
+              d="M 100 200 Q 400 180, 550 140 T 950 80 T 1400 30 L 1620 20"
+              fill="none"
+              stroke="url(#trailGrad)"
+              stroke-width="3"
+              stroke-linecap="round"
+              filter="url(#glow)"
+            />
+            <!-- Data point dots -->
+            <circle cx="100" cy="200" r="5" fill="#39FF14" filter="url(#glow)" opacity="0.7"/>
+            <circle cx="550" cy="140" r="5" fill="#39FF14" filter="url(#glow)" opacity="0.8"/>
+            <circle cx="950" cy="80" r="6" fill="#39FF14" filter="url(#glow)" opacity="0.9"/>
+            <circle cx="1620" cy="20" r="8" fill="#39FF14" filter="url(#glow)"/>
+            <!-- Arrow head at end -->
+            <polygon points="1620,8 1635,20 1620,32" fill="#39FF14" filter="url(#glow)"/>
+          </svg>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="bar-chart">
+          <div class="bar-wrapper">
+            <div class="bar" style="height: 24px;"></div>
+            <div class="bar-label">2025</div>
+          </div>
+          <div class="bar-wrapper">
+            <div class="bar" style="height: 54px;"></div>
+            <div class="bar-label">2026</div>
+          </div>
+          <div class="bar-wrapper">
+            <div class="bar" style="height: 108px;"></div>
+            <div class="bar-label">2027</div>
+          </div>
+          <div class="bar-wrapper">
+            <div class="bar final" style="height: 160px;"></div>
+            <div class="bar-label">2028</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stage cards -->
+      <div class="stages-row">
+
+        <!-- Stage 1: 2025 -->
+        <div class="stage-card">
+          <div class="card-corner tl"></div>
+          <div class="card-corner br"></div>
+          <div class="card-arrow"></div>
+
+          <div class="stage-year">
+            <span class="year-badge">2025</span>
+            <span class="stage-marker">Stage 01</span>
+          </div>
+
+          <div class="stage-pairs">100,000</div>
+          <div class="pairs-unit">Pairs</div>
+
+          <div class="stage-divider"></div>
+
+          <div class="revenue-label">Projected Revenue</div>
+          <div class="revenue-value"><span class="cur">$</span>8M</div>
+        </div>
+
+        <!-- Stage 2: 2026 -->
+        <div class="stage-card">
+          <div class="card-corner tl"></div>
+          <div class="card-corner br"></div>
+          <div class="card-arrow"></div>
+          <div class="growth-badge">+200%</div>
+
+          <div class="stage-year">
+            <span class="year-badge">2026</span>
+            <span class="stage-marker">Stage 02</span>
+          </div>
+
+          <div class="stage-pairs">300,000</div>
+          <div class="pairs-unit">Pairs</div>
+
+          <div class="stage-divider"></div>
+
+          <div class="revenue-label">Projected Revenue</div>
+          <div class="revenue-value"><span class="cur">$</span>18M</div>
+        </div>
+
+        <!-- Stage 3: 2027 -->
+        <div class="stage-card">
+          <div class="card-corner tl"></div>
+          <div class="card-corner br"></div>
+          <div class="card-arrow"></div>
+          <div class="growth-badge">+100%</div>
+
+          <div class="stage-year">
+            <span class="year-badge">2027</span>
+            <span class="stage-marker">Stage 03</span>
+          </div>
+
+          <div class="stage-pairs">600,000</div>
+          <div class="pairs-unit">Pairs</div>
+
+          <div class="stage-divider"></div>
+
+          <div class="revenue-label">Projected Revenue</div>
+          <div class="revenue-value"><span class="cur">$</span>40M</div>
+        </div>
+
+        <!-- Stage 4: 2028 (highlighted) -->
+        <div class="stage-card">
+          <div class="card-corner tl"></div>
+          <div class="card-corner br"></div>
+          <div class="growth-badge">+125%</div>
+
+          <div class="stage-year">
+            <span class="year-badge">2028</span>
+            <span class="stage-marker">Stage 04</span>
+          </div>
+
+          <div class="stage-pairs">1,000,000</div>
+          <div class="pairs-unit">Pairs</div>
+
+          <div class="stage-divider"></div>
+
+          <div class="revenue-label">Projected Revenue</div>
+          <div class="revenue-value"><span class="cur">$</span>90M</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom metrics strip -->
+    <div class="metrics-strip">
+      <div class="metric-item">
+        <div class="metric-value">10x</div>
+        <div class="metric-label">Volume Growth</div>
+      </div>
+      <div class="metric-sep"></div>
+      <div class="metric-item">
+        <div class="metric-value pink">11.25x</div>
+        <div class="metric-label">Revenue Growth</div>
+      </div>
+      <div class="metric-sep"></div>
+      <div class="metric-item">
+        <div class="metric-value">$156M</div>
+        <div class="metric-label">Cumulative Revenue</div>
+      </div>
+      <div class="metric-sep"></div>
+      <div class="metric-item">
+        <div class="metric-value pink">4 YRS</div>
+        <div class="metric-label">Time Horizon</div>
+      </div>
+    </div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">14</span>
+    </div>
+
+  </div>
+</body>
+</html>

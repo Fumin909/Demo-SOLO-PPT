@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - Our Product</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* Slide 06 - Our Product specific styles */
+
+    .slide-product {
+      background: #000000;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle radial glow behind product */
+    .product-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 900px;
+      height: 900px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(57, 255, 20, 0.08) 0%, rgba(57, 255, 20, 0.02) 40%, transparent 70%);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* Floor reflection / shadow */
+    .product-shadow {
+      position: absolute;
+      bottom: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 700px;
+      height: 60px;
+      background: radial-gradient(ellipse at center, rgba(57, 255, 20, 0.2) 0%, transparent 70%);
+      filter: blur(20px);
+      z-index: 1;
+    }
+
+    /* Product image centered */
+    .product-image-wrap {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -45%);
+      width: 820px;
+      height: 620px;
+      z-index: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 0 60px rgba(57, 255, 20, 0.25)) drop-shadow(0 30px 60px rgba(0,0,0,0.8));
+      animation: floaty 6s ease-in-out infinite;
+    }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    /* Header section - top center */
+    .product-header {
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .product-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: var(--solo-primary);
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .product-eyebrow::before,
+    .product-eyebrow::after {
+      content: '';
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: var(--solo-primary);
+      vertical-align: middle;
+      margin: 0 16px;
+      opacity: 0.5;
+    }
+
+    .product-title {
+      font-family: var(--font-display);
+      font-size: 64px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--solo-text);
+      line-height: 1.1;
+      margin-bottom: 24px;
+    }
+
+    .product-title .neon-word {
+      color: var(--solo-primary);
+      text-shadow: 0 0 40px var(--solo-primary-glow);
+    }
+
+    .product-subtitle {
+      font-size: 20px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+      max-width: 700px;
+      margin: 0 auto;
+      letter-spacing: 0.3px;
+    }
+
+    /* Annotation SVG layer for lines */
+    .annotation-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .annotation-lines line {
+      stroke: var(--solo-primary);
+      stroke-width: 1.5;
+      stroke-linecap: round;
+      filter: drop-shadow(0 0 6px var(--solo-primary-glow));
+    }
+
+    .annotation-dot {
+      fill: var(--solo-primary);
+      filter: drop-shadow(0 0 8px var(--solo-primary-glow));
+    }
+
+    /* Feature card/label style */
+    .feature-card {
+      position: absolute;
+      z-index: 10;
+      background: rgba(20, 20, 20, 0.7);
+      border: 1px solid rgba(57, 255, 20, 0.3);
+      border-radius: var(--radius-md);
+      padding: 20px 24px;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      min-width: 260px;
+    }
+
+    .feature-card::before {
+      content: '';
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      right: -1px;
+      bottom: -1px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(57,255,20,0.4), transparent 50%);
+      opacity: 0.6;
+      z-index: -1;
+    }
+
+    .feature-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .feature-label .label-marker {
+      width: 8px;
+      height: 8px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+      flex-shrink: 0;
+    }
+
+    .feature-label .label-text {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--solo-text);
+    }
+
+    /* Left side - COMFORT */
+    .comfort-card {
+      top: 380px;
+      left: 120px;
+      width: 360px;
+    }
+
+    .comfort-bullets {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .comfort-bullets li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 17px;
+      line-height: 1.5;
+      color: var(--solo-text-muted);
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .comfort-bullets li:last-child {
+      border-bottom: none;
+    }
+
+    .comfort-bullets li::before {
+      content: '';
+      flex-shrink: 0;
+      width: 6px;
+      height: 6px;
+      background: var(--solo-primary);
+      border-radius: 1px;
+      transform: rotate(45deg) translateY(9px);
+      box-shadow: 0 0 6px var(--solo-primary-glow);
+    }
+
+    /* Right side - SUSTAINABILITY */
+    .sustain-card {
+      top: 500px;
+      right: 120px;
+      width: 380px;
+    }
+
+    .sustain-text {
+      font-size: 17px;
+      line-height: 1.6;
+      color: var(--solo-text-muted);
+      padding-top: 4px;
+    }
+
+    .sustain-highlight {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: var(--font-display);
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--solo-primary);
+      text-shadow: 0 0 30px var(--solo-primary-glow);
+      letter-spacing: 1px;
+    }
+
+    .sustain-highlight small {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--solo-text-muted);
+      letter-spacing: 2px;
+      margin-left: 8px;
+      text-shadow: none;
+    }
+
+    /* Small decorative crosshair / marker at shoe connection points */
+    .shoe-marker {
+      position: absolute;
+      z-index: 8;
+      width: 14px;
+      height: 14px;
+    }
+    .shoe-marker::before,
+    .shoe-marker::after {
+      content: '';
+      position: absolute;
+      background: var(--solo-primary);
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+    }
+    .shoe-marker::before {
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      transform: translateY(-50%);
+    }
+    .shoe-marker::after {
+      left: 50%;
+      top: 0;
+      width: 1px;
+      height: 100%;
+      transform: translateX(-50%);
+    }
+
+    .marker-comfort {
+      top: 470px;
+      left: 700px;
+    }
+
+    .marker-sustain {
+      top: 600px;
+      right: 700px;
+    }
+
+    /* Bottom brand / specs bar */
+    .product-specs-bar {
+      position: absolute;
+      bottom: 130px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 60px;
+      z-index: 10;
+      padding: 20px 50px;
+      border-top: 1px solid rgba(57, 255, 20, 0.2);
+      border-bottom: 1px solid rgba(57, 255, 20, 0.2);
+    }
+
+    .spec-item {
+      text-align: center;
+    }
+
+    .spec-value {
+      font-family: var(--font-display);
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--solo-primary);
+      text-shadow: 0 0 20px var(--solo-primary-glow);
+      letter-spacing: 1px;
+    }
+
+    .spec-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--solo-text-dim);
+      margin-top: 4px;
+    }
+
+    .spec-divider {
+      width: 1px;
+      height: 36px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    /* Corner decoration */
+    .corner-frame {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+    }
+    .corner-frame.tl {
+      top: 40px;
+      left: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.tr {
+      top: 40px;
+      right: 40px;
+      border-top: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.bl {
+      bottom: 40px;
+      left: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-left: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+    .corner-frame.br {
+      bottom: 40px;
+      right: 40px;
+      border-bottom: 2px solid var(--solo-primary);
+      border-right: 2px solid var(--solo-primary);
+      opacity: 0.6;
+    }
+
+    /* Subtle floating particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .particle {
+      position: absolute;
+      width: 3px;
+      height: 3px;
+      background: var(--solo-primary);
+      border-radius: 50%;
+      opacity: 0.4;
+      box-shadow: 0 0 8px var(--solo-primary-glow);
+      animation: particleFloat 8s infinite ease-in-out;
+    }
+
+    @keyframes particleFloat {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+      50% { transform: translateY(-30px) translateX(10px); opacity: 0.6; }
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes drawLine {
+      from { stroke-dashoffset: 500; }
+      to { stroke-dashoffset: 0; }
+    }
+
+    .product-header { animation: fadeInUp 0.9s ease-out forwards; }
+    .comfort-card { animation: fadeInUp 0.8s ease-out 0.3s forwards; opacity: 0; }
+    .sustain-card { animation: fadeInUp 0.8s ease-out 0.5s forwards; opacity: 0; }
+    .product-specs-bar { animation: fadeInUp 0.8s ease-out 0.7s forwards; opacity: 0; }
+  </style>
+</head>
+<body>
+  <div class="slide slide-product">
+
+    <!-- Corner frames -->
+    <div class="corner-frame tl"></div>
+    <div class="corner-frame tr"></div>
+    <div class="corner-frame bl"></div>
+    <div class="corner-frame br"></div>
+
+    <!-- Ambient glow behind product -->
+    <div class="product-glow"></div>
+
+    <!-- Floating particles -->
+    <div class="particles">
+      <div class="particle" style="top: 25%; left: 20%; animation-delay: 0s;"></div>
+      <div class="particle" style="top: 60%; left: 15%; animation-delay: 1s;"></div>
+      <div class="particle" style="top: 30%; right: 18%; animation-delay: 2s;"></div>
+      <div class="particle" style="top: 70%; right: 22%; animation-delay: 3s;"></div>
+      <div class="particle" style="top: 45%; left: 25%; animation-delay: 1.5s;"></div>
+      <div class="particle" style="top: 55%; right: 28%; animation-delay: 2.5s;"></div>
+      <div class="particle" style="top: 20%; left: 50%; animation-delay: 0.5s;"></div>
+      <div class="particle" style="top: 80%; left: 45%; animation-delay: 3.5s;"></div>
+    </div>
+
+    <!-- Floor shadow/reflection -->
+    <div class="product-shadow"></div>
+
+    <!-- Header / Title -->
+    <div class="product-header">
+      <div class="product-eyebrow">Our Product</div>
+      <h1 class="product-title">VERSATILE <span class="neon-word">SPORTY</span> SNEAKERS</h1>
+      <p class="product-subtitle">Consumers can design their own shoes on the website according to their preferences.</p>
+    </div>
+
+    <!-- Product Image -->
+    <div class="product-image-wrap">
+      <img src="../assets/images/slide-product.jpg" alt="SOLO Neon Sneaker">
+    </div>
+
+    <!-- Annotation lines SVG -->
+    <svg class="annotation-lines" viewBox="0 0 1920 1080" preserveAspectRatio="none">
+      <!-- Comfort line: bent path from card right edge to shoe left side -->
+      <path d="M 484 430 L 640 430 L 700 485"
+            stroke="#39FF14" stroke-width="1.5" fill="none"
+            stroke-linecap="round" stroke-linejoin="round"
+            style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.6));
+                   stroke-dasharray: 500; animation: drawLine 1.2s ease-out 0.8s forwards; stroke-dashoffset: 500;"/>
+      <!-- Connection dot at shoe -->
+      <circle cx="702" cy="486" r="4" fill="#39FF14" style="filter: drop-shadow(0 0 8px rgba(57,255,20,0.8));"/>
+      <!-- Small circle at card-side -->
+      <circle cx="484" cy="430" r="3" fill="#39FF14" style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.8));"/>
+
+      <!-- Sustainability line: bent path from card left edge to shoe right side -->
+      <path d="M 1418 550 L 1300 550 L 1225 615"
+            stroke="#39FF14" stroke-width="1.5" fill="none"
+            stroke-linecap="round" stroke-linejoin="round"
+            style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.6));
+                   stroke-dasharray: 500; animation: drawLine 1.2s ease-out 1s forwards; stroke-dashoffset: 500;"/>
+      <circle cx="1223" cy="616" r="4" fill="#39FF14" style="filter: drop-shadow(0 0 8px rgba(57,255,20,0.8));"/>
+      <circle cx="1418" cy="550" r="3" fill="#39FF14" style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.8));"/>
+
+      <!-- Thin vertical tick marks at card connection points for tech aesthetic -->
+      <line x1="484" y1="420" x2="484" y2="440" stroke="#39FF14" stroke-width="1.5"
+            style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.6));"/>
+      <line x1="1418" y1="540" x2="1418" y2="560" stroke="#39FF14" stroke-width="1.5"
+            style="filter: drop-shadow(0 0 6px rgba(57,255,20,0.6));"/>
+    </svg>
+
+    <!-- Left annotation: COMFORT -->
+    <div class="feature-card comfort-card">
+      <div class="feature-label">
+        <span class="label-marker"></span>
+        <span class="label-text">Comfort</span>
+      </div>
+      <ul class="comfort-bullets">
+        <li>Fantastic breathability</li>
+        <li>Extra thick cushioning</li>
+        <li>Feels lightweight</li>
+      </ul>
+    </div>
+
+    <!-- Right annotation: SUSTAINABILITY -->
+    <div class="feature-card sustain-card">
+      <div class="feature-label">
+        <span class="label-marker"></span>
+        <span class="label-text">Sustainability</span>
+      </div>
+      <p class="sustain-text">100% eco-friendly and sustainable materials</p>
+      <div class="sustain-highlight">100%<small>RECYCLABLE</small></div>
+    </div>
+
+    <!-- Bottom specs bar -->
+    <div class="product-specs-bar">
+      <div class="spec-item">
+        <div class="spec-value">CUSTOM</div>
+        <div class="spec-label">Design</div>
+      </div>
+      <div class="spec-divider"></div>
+      <div class="spec-item">
+        <div class="spec-value">100%</div>
+        <div class="spec-label">Eco Materials</div>
+      </div>
+      <div class="spec-divider"></div>
+      <div class="spec-item">
+        <div class="spec-value">ASIA</div>
+        <div class="spec-label">Inspired</div>
+      </div>
+      <div class="spec-divider"></div>
+      <div class="spec-item">
+        <div class="spec-value">LIGHT</div>
+        <div class="spec-label">Weight</div>
+      </div>
+    </div>
+
+    <!-- Page number -->
+    <div class="page-number">
+      <span class="caption">PAGE</span>
+      <span class="current">06</span>
+    </div>
+
+  </div>
+</body>
+</html>

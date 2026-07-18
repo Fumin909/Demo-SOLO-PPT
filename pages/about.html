@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOLO - About Us</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    /* About page specific styles */
+    .about-bg {
+      background: linear-gradient(135deg, #0A0A0A 0%, #0F0F0F 50%, #0A0A0A 100%);
+    }
+
+    /* Right side image with gradient mask */
+    .about-image {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      -webkit-mask-image: linear-gradient(to left, black 50%, transparent 100%);
+      mask-image: linear-gradient(to left, black 50%, transparent 100%);
+    }
+
+    .about-image::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to left, transparent 40%, var(--solo-bg) 100%);
+    }
+
+    /* Left content area */
+    .about-content {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 55%;
+      height: 100%;
+      z-index: 4;
+      padding: 160px 100px 100px 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .about-content .section-label {
+      margin-bottom: 48px;
+    }
+
+    .about-content .intro-title {
+      font-family: var(--font-display);
+      font-size: 72px;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      text-transform: uppercase;
+      color: var(--solo-text);
+      margin-bottom: 56px;
+    }
+
+    .about-content .intro-title .accent-pink {
+      color: var(--solo-accent);
+      text-shadow: 0 0 30px var(--solo-accent-glow);
+    }
+
+    /* Content cards stack */
+    .cards-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      max-width: 680px;
+    }
+
+    .label-card {
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .label-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: var(--solo-primary);
+    }
+
+    .label-card.vision-card::before {
+      background: var(--solo-accent);
+    }
+
+    .label-card .card-title {
+      font-family: var(--font-display);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--solo-text);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .label-card .card-title .card-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--solo-primary);
+      box-shadow: 0 0 10px var(--solo-primary-glow);
+    }
+
+    .label-card.vision-card .card-title .card-dot {
+      background: var(--solo-accent);
+      box-shadow: 0 0 10px var(--solo-accent-glow);
+    }
+
+    .label-card.vision-card .card-title {
+      color: var(--solo-text);
+    }
+
+    .label-card.vision-card .card-title .title-accent {
+      color: var(--solo-accent);
+    }
+
+    .label-card .body-text {
+      font-size: 20px;
+      line-height: 1.7;
+      color: var(--solo-text-muted);
+    }
+
+    /* Decorative elements */
+    .deco-line {
+      position: absolute;
+      z-index: 2;
+    }
+
+    .deco-line.horizontal {
+      width: 200px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--solo-primary), transparent);
+    }
+
+    .deco-dot-pattern {
+      position: absolute;
+      z-index: 2;
+      opacity: 0.3;
+    }
+
+    /* Page number override for about page */
+    .about-page-number {
+      position: absolute;
+      bottom: 60px;
+      right: 100px;
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--solo-text-dim);
+      z-index: 10;
+    }
+
+    .about-page-number .current {
+      font-size: 32px;
+      color: var(--solo-primary);
+    }
+
+    /* Animations */
+    .anim-delay-1 { animation-delay: 0.2s; opacity: 0; }
+    .anim-delay-2 { animation-delay: 0.4s; opacity: 0; }
+    .anim-delay-3 { animation-delay: 0.6s; opacity: 0; }
+    .anim-delay-4 { animation-delay: 0.8s; opacity: 0; }
+  </style>
+</head>
+<body>
+  <section class="slide about-bg">
+    <!-- Background subtle gradient handled by .about-bg -->
+
+    <!-- Grid Overlay -->
+    <div class="grid-lines"></div>
+
+    <!-- Right Side Image with gradient mask -->
+    <div class="about-image">
+      <img src="../assets/images/slide-about.jpg" alt="About SOLO">
+    </div>
+
+    <!-- Brand Tag (Top Left) -->
+    <div class="brand-tag animate-fade anim-delay-1">
+      <span class="logo">SOLO</span>
+      <span class="divider"></span>
+      <span class="tag-text">SR C13</span>
+    </div>
+
+    <!-- Left Content Area -->
+    <div class="about-content">
+      <!-- Section Label -->
+      <div class="section-label animate-fade anim-delay-1">
+        <span class="neon-label">About Us</span>
+      </div>
+
+      <!-- Intro Title -->
+      <h2 class="intro-title animate-slide-up anim-delay-2">
+        Defining The<br><span class="accent-pink">Future</span> Of Footwear
+      </h2>
+
+      <!-- Content Cards -->
+      <div class="cards-stack">
+        <!-- Mission Card -->
+        <div class="label-card mission-card animate-slide-up anim-delay-3">
+          <div class="card-title">
+            <span class="card-dot"></span>
+            Mission
+          </div>
+          <p class="body-text">
+            Encourage individuals to embrace their uniqueness, committing each step for the future of the planet.
+          </p>
+        </div>
+
+        <!-- Vision Card -->
+        <div class="label-card vision-card animate-slide-up anim-delay-4">
+          <div class="card-title">
+            <span class="card-dot"></span>
+            <span class="title-accent">Vision</span>
+          </div>
+          <p class="body-text">
+            To be a global leader in eco-friendly athletic footwear, enabling personalized expression through innovative design.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corner Accents -->
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent bottom-right"></div>
+
+    <!-- Page Number (Bottom Right) -->
+    <div class="about-page-number animate-fade anim-delay-4">
+      <span class="current">02</span>
+    </div>
+  </section>
+</body>
+</html>
